@@ -11,7 +11,7 @@ import { domain } from './utils/variables';
 import { useContext } from 'react';
 
 function App() {
-  const { user, setUser } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
 
   const fetchUser = async () => {
     await fetch(domain + '/api/getUser', {
@@ -20,10 +20,13 @@ function App() {
     })
       .then(res => res.json())
       .then(data => {
-        setUser(data.user);
+        if(data.user){
+          setUser(data.user);
+        }
       })
       .catch(e => console.log(e));
   }
+
   useEffect(() => {
     fetchUser();
   }, []);

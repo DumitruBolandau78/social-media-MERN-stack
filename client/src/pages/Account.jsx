@@ -14,13 +14,26 @@ const Account = () => {
   const [registerEmail, setRegisterEmail] = useState('');
   const [registerPass, setRegisterPass] = useState('');
   const navigate = useNavigate();
-  const { user, setUser } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
 
-  if(user){
-    navigate('/');
+  const fetchUser = async () => {
+    await fetch(domain + '/api/getUser', {
+      method: 'GET',
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(data => {
+        if(data.user){
+          setUser(data.user);
+          navigate('/');
+        }
+      })
+      .catch(e => console.log(e));
   }
 
   useEffect(() => {
+    fetchUser();
+
     if(params !== 'login' && params !== 'register' && params !== 'get-new-password'){
       navigate('/wrong-page');
     }

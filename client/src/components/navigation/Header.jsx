@@ -16,7 +16,7 @@ const Header = () => {
       </form>
       <div>
         {user ?
-          <div className="flex max-w-[40px] cursor-pointer items-end text-white text-2xl"><div className="pr-2">{user.username}</div><img className="rounded-full bg-white p-2 w-full" src="/images/user.png" alt="user avatar" /></div>
+          <div className="max-w-[40px] cursor-pointer text-white text-2xl"><img className="rounded-full bg-white p-2 w-full" src="/images/user.png" alt="user avatar" /></div>
           :
           <Link to={'/account/login'} className="flex items-center gap-2 text-white">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
