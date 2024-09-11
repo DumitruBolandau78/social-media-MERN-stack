@@ -5,10 +5,9 @@ export const UserContext = React.createContext();
 // eslint-disable-next-line react/prop-types
 const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [favorites, useFavorites] = useState(localStorage.favorites ? JSON.parse(localStorage.favorites) : []);
 
     return (
-        <UserContext.Provider value={{ user, setUser, favorites, useFavorites }}>
+        <UserContext.Provider value={{ user, setUser }}>
             { children }
         </UserContext.Provider>
     )

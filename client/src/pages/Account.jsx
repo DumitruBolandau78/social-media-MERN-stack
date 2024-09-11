@@ -14,7 +14,11 @@ const Account = () => {
   const [registerEmail, setRegisterEmail] = useState('');
   const [registerPass, setRegisterPass] = useState('');
   const navigate = useNavigate();
-  const { setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+
+  if(user){
+    navigate('/');
+  }
 
   useEffect(() => {
     if(params !== 'login' && params !== 'register' && params !== 'get-new-password'){
@@ -32,6 +36,7 @@ const Account = () => {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         method: 'POST',
         body: json
       })
@@ -53,12 +58,11 @@ const Account = () => {
           'Content-Type': 'application/json',
         },
         method: 'POST',
+        credentials: 'include',
         body: json
       })
       .then(res => res.json())
       .then(data => {
-        console.log(data)
-  
         if(data.error){
           setError(data.error)
         } else if(data.message){

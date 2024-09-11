@@ -21,7 +21,3 @@ input {
 .aside {
   height: calc(100vh - 90px - 24px);
 }
-
-.container {
-  overflow-y: auto;
-}

@@ -1,26 +1,9 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { UserContext } from '../../context/UserContext.jsx';
 import { Link } from "react-router-dom";
-import { domain } from "../../utils/variables.jsx";
 
 const Header = () => {
   const { user } = useContext(UserContext);
-
-  const fetchUser = async () => {
-    await fetch(domain + '/api/getUser', {
-      method: 'GET',
-      credentials: 'include'
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-
-      })
-      .catch(e => console.log(e));
-  }
-  useEffect(() => {
-    fetchUser();
-  }, []);
 
   return (
     <header className='flex py-4 w-full justify-between items-center h-[80px] mb-6'>
