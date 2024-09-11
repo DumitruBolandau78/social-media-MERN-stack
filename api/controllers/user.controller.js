@@ -18,7 +18,6 @@ router.get('/getUser', (req, res) => {
 router.post('/register', registerValidator, async (req, res) => {
   try {
     const { username, email, password, name } = req.body;
-    console.log(name);
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -46,13 +45,24 @@ router.post('/login', loginValidator, async (req, res) => {
       return res.json({ error: errors.array()[0].msg });
     }
 
-    const populatedUser = await User.findOne({ username }).select('username posts followers following email name').exec();
+    const populatedUser = await User.findOne({ username }).select('username posts followers following email name avatarUrl').exec();
     req.session.user = populatedUser;
     req.session.save(err => {
       if (err) throw new err;
       return res.json({message: 'Login successfull', user: req.session.user});
     });
 
+  } catch (error) {
+    console.log(error)
+  }
+});
+
+router.post('/logout', (req, res) => {
+  try {    
+    req.session.destroy(err => {
+      if(err) throw err;
+      return res.json({ message: 'Logout successful' });
+    });
   } catch (error) {
     console.log(error)
   }

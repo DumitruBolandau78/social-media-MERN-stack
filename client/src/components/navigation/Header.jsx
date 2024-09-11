@@ -1,9 +1,33 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from '../../context/UserContext.jsx';
 import { Link } from "react-router-dom";
+import Modal from "../Modal.jsx";
+import { domain } from "../../utils/variables.jsx";
 
 const Header = () => {
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+  const [isOpen, toggle] = useState(false);
+
+  async function logoutHandler(){
+    await fetch(domain + '/api/logout', {
+      method: 'POST',
+      credentials: 'include'
+    })
+    .then(res => res.json())
+    .then(data => {
+      if(data.message) {
+        setUser(null);
+        toggle(false);
+      } else {
+        console.log(data);
+      }
+    })
+    .catch(err => console.error(err));
+  }
+
+  function handlOpenModal(bool) {
+    toggle(bool);
+  }
 
   return (
     <header className='flex py-4 w-full justify-between items-center h-[80px] mb-6'>
@@ -16,7 +40,9 @@ const Header = () => {
       </form>
       <div>
         {user ?
-          <div className="max-w-[40px] cursor-pointer text-white text-2xl border-b pb-1"><img className="rounded-full bg-white p-2 w-full" src="/images/user.png" alt="user avatar" /></div>
+          <div onClick={() => handlOpenModal(true)} className="max-w-[40px] cursor-pointer text-white text-2xl border-b pb-1">
+            <img className="rounded-full bg-white p-2 w-full" src={user.avatarUrl === '' ? "/images/user.png" : user.avatarUrl} alt="user avatar" />
+          </div>
           :
           <Link to={'/account/login'} className="flex items-center gap-2 text-white">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
@@ -25,6 +51,12 @@ const Header = () => {
             LOGIN
           </Link>}
       </div>
+      <Modal isOpen={isOpen} handleClose={() => handlOpenModal(false)}>
+        <div className="h-full w-full flex justify-center items-center gap-5">
+          <button onClick={logoutHandler} className="bg-gray-900 text-white rounded-full py-2 px-6 text-2xl pb-3">Logout</button>
+          <Link onClick={() => handlOpenModal(false)} className="bg-gray-900 text-white rounded-full py-2 px-6 text-2xl pb-3" to={'/profile'}>My Profile</Link>
+        </div>
+      </Modal>
     </header>
   )
 }
