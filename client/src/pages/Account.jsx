@@ -10,9 +10,10 @@ const Account = () => {
   const [error, setError] = useState(null);
   const [loginName, setLoginName] = useState('');
   const [loginPass, setLoginPass] = useState('');
-  const [registerName, setRegisterName] = useState('');
+  const [registerUsername, setRegisterUsername] = useState('');
   const [registerEmail, setRegisterEmail] = useState('');
   const [registerPass, setRegisterPass] = useState('');
+  const [registerName, setRegisterName] = useState('');
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
 
@@ -65,7 +66,7 @@ const Account = () => {
         }
       })
     } else if(params == 'register'){
-      json = JSON.stringify({ username: registerName, password: registerPass, email: registerEmail });
+      json = JSON.stringify({ username: registerUsername, name: registerName, password: registerPass, email: registerEmail });
       await fetch(domain + '/api/register', {
         headers: {
           'Content-Type': 'application/json',
@@ -79,7 +80,9 @@ const Account = () => {
         if(data.error){
           setError(data.error)
         } else if(data.message){
+          setError(null);
           setRegisterEmail('');
+          setRegisterUsername('');
           setRegisterName('');
           setRegisterPass('');
           navigate('/account/login');
@@ -107,7 +110,10 @@ const Account = () => {
         params == 'register' ?
           <JoinUserForm submitHandler={submitHandler} title={'REGISTER'} error={error}>
             <div className="inputBox">
-              <input value={registerName} onChange={e => setRegisterName(e.target.value)} type="text" required /> <i>Username</i>
+              <input value={registerUsername} onChange={e => setRegisterUsername(e.target.value)} type="text" required /> <i>Username</i>
+            </div>
+            <div className="inputBox">
+              <input value={registerName} onChange={e => setRegisterName(e.target.value)} type="text" required /> <i>Name</i>
             </div>
             <div className="inputBox">
               <input value={registerEmail} onChange={e => setRegisterEmail(e.target.value)} type="email" required /> <i>Email</i>

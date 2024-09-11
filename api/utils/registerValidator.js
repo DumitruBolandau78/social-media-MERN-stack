@@ -2,7 +2,7 @@ import User from "../models/User.js";
 import { body } from "express-validator";
 
 const registerValidator = [
-  body('username', 'Name should be at least 3 characters.').isLength({ min: 3, max: 20 }).isAlphanumeric().custom(async (value, { req }) => {
+  body('username', 'Username should be at least 3 characters.').isLength({ min: 3, max: 20 }).isAlphanumeric().custom(async (value, { req }) => {
     try {
       const user = await User.findOne({ username: value });
 
@@ -13,6 +13,7 @@ const registerValidator = [
       console.log(error);
     }
   }),
+  body('name', 'Name should be at least 3 characters.').isLength({ min: 3, max: 20 }),
   body('email', 'Please use a valid email address.').isEmail().normalizeEmail().custom(async (value, { req }) => {
     try {
       const user = await User.findOne({ email: value });

@@ -17,7 +17,8 @@ router.get('/getUser', (req, res) => {
 
 router.post('/register', registerValidator, async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, name } = req.body;
+    console.log(name);
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -25,7 +26,7 @@ router.post('/register', registerValidator, async (req, res) => {
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
-    const user = new User({ username, email, password: hashPassword });
+    const user = new User({ username, email, password: hashPassword, name });
 
     user.save();
     res.json({ message: 'User created successfull' });
@@ -45,7 +46,7 @@ router.post('/login', loginValidator, async (req, res) => {
       return res.json({ error: errors.array()[0].msg });
     }
 
-    const populatedUser = await User.findOne({ username }).select('username posts followers following email').exec();
+    const populatedUser = await User.findOne({ username }).select('username posts followers following email name').exec();
     req.session.user = populatedUser;
     req.session.save(err => {
       if (err) throw new err;

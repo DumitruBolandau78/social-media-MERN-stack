@@ -7,6 +7,7 @@ import MongoDBStore from 'connect-mongodb-session';
 import userController from './controllers/user.controller.js';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import userRoutes from './Routes/User.route.js';
 
 env.config();
 const PORT = 1000 || process.env.PORT;
@@ -48,6 +49,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api', userController);
+app.use('/api', userRoutes);
 
 async function start() {
     try {
