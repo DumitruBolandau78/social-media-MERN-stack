@@ -7,9 +7,10 @@ import loginValidator from '../utils/loginValidator.js';
 
 const router = Router();
 
-router.get('/getUser', (req, res) => {
+router.get('/getCurrentUser', async (req, res) => {
   if(req.session.user){
-    res.json({user: req.session.user});
+    const populatedUser = await User.findOne({ username: req.session.user.username }).select('username posts followers following email name avatarUrl').exec();
+    res.json({user: populatedUser});
   } else {
     return res.status(404).json({error: 'Could not find user or is authenticated'});
   }

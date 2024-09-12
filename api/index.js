@@ -18,7 +18,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static('images'));
+app.use(express.static('public'));
+app.use('/images', express.static('public'));
 app.use(cors({
     origin: ['http://localhost:5173'],
     methods: ['get', 'post', 'put', 'delete'],

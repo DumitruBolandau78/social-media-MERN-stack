@@ -14,7 +14,7 @@ function App() {
   const { setUser } = useContext(UserContext);
 
   const fetchUser = async () => {
-    await fetch(domain + '/api/getUser', {
+    await fetch(domain + '/api/getCurrentUser', {
       method: 'GET',
       credentials: 'include'
     })
@@ -32,7 +32,7 @@ function App() {
   }, []);
 
   return (
-    <div className="app max-w-screen-xl mx-auto">
+    <div className="app w-full">
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route path='/' index element={<Feed />} />

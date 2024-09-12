@@ -12,7 +12,7 @@ const userSchema = new Schema({
   },
   avatarUrl: {
     type: String,
-    default: ''
+    default: '/images/user.png'
   },
   password: {
     type: String,
@@ -41,6 +41,8 @@ const userSchema = new Schema({
       ref: 'User'
     }
   ]
+}, {
+  timestamps: true
 });
 
 const User = model('User', userSchema);

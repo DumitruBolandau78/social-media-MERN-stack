@@ -8,7 +8,7 @@ const Layout = () => {
     <>
       <Header />
       <div className='flex'>
-        <div className="container grid grid-cols-5 ">
+        <div className="container grid grid-cols-12 ">
           <Aside />
           <Outlet />
           <RightSide />
