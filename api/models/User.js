@@ -14,6 +14,22 @@ const userSchema = new Schema({
     type: String,
     default: '/images/user.png'
   },
+  notifications: [
+    {
+      userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+      },
+      message: {
+        type: String,
+        required: true
+      },
+      postId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Post'
+      },
+    }
+  ],
   password: {
     type: String,
     required: true

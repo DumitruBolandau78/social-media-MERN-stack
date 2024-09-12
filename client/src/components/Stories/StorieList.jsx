@@ -2,7 +2,7 @@ import Storie from './Storie';
 
 const StorieList = () => {
   return (
-    <div className='flex gap-2'>
+    <div className='flex gap-2 border-b-[1px] border-gray-600 pb-4'>
       <Storie>
         <div className='flex items-center justify-center w-full h-full'>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-black size-6">
