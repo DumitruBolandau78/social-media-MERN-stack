@@ -1,22 +1,36 @@
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Container from '../components/Container'
 import { UserContext } from '../context/UserContext';
 import { domain } from '../utils/variables';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import ProfilePostList from '../components/Posts/ProfilePostList';
 
 const Profile = () => {
-  const { user } = useContext(UserContext);
-  const location = useLocation();
+  const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('posts');
 
   useEffect(() => {
-    if(location.pathname === '/profile'){
-      if(!user){
-        alert('To access PROFILE please LOG IN.');
-        navigate('/');
-      }
-    }
+    fetchUser();
   }, []);
+
+  const fetchUser = () => {
+    fetch(domain + '/api/getCurrentUser', {
+      method: 'GET',
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log('toggle');
+        if (data.user) {
+          setUser(data.user);
+        } else {
+          alert('To access PROFILE please LOG IN.');
+          navigate('/');
+        }
+      })
+      .catch(e => console.log(e));
+  }
 
   return (
     <Container>
@@ -35,9 +49,11 @@ const Profile = () => {
         </div>
       </div>
       <div className='grid grid-cols-2 border-t-2 border-white mt-6 pt-3'>
-        <div className='justify-self-center'>POSTS</div>
-        <div className='justify-self-center'>SAVED</div>
-
+        <div onClick={() => setActiveTab('posts')} className={activeTab === 'posts'? 'justify-self-center cursor-pointer font-semibold' : 'justify-self-center cursor-pointer'}>POSTS</div>
+        <div onClick={() => setActiveTab('saved')} className={activeTab === 'saved'? 'justify-self-center cursor-pointer font-semibold' : 'justify-self-center cursor-pointer'}>SAVED</div>
+        
+        <div onClick={() => setActiveTab('posts')} className={activeTab === 'posts'? 'col-span-2' : 'hidden'}><ProfilePostList /> </div>
+        <div onClick={() => setActiveTab('saved')} className={activeTab === 'saved'? 'col-span-2' : 'hidden'}><div></div> </div>
       </div>
     </Container>
   )

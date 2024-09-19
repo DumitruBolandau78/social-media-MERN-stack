@@ -31,6 +31,7 @@ const Feed = () => {
     })
       .then(res => res.json())
       .then(data => {
+        console.log('feed');
         if (data.posts) setPosts(data.posts);
         setDesc('');
         setNotification('');

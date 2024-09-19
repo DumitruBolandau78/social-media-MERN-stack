@@ -25,7 +25,7 @@ const PostList = ({ posts, setPosts }) => {
 
   return (
     <div className='mt-7'>
-      { posts.map(post => <PostFeed key={post._id} {...post} username={post.user.username} name={post.user.name} avatarUrl={post.user.avatarUrl} />)}
+      { posts.map(post => <PostFeed key={'post-feed-' + post._id} {...post} username={post.user.username} name={post.user.name} avatarUrl={post.user.avatarUrl} />)}
     </div>
   ) 
 }

@@ -16,7 +16,7 @@ const Header = () => {
     })
       .then(res => res.json())
       .then(data => {
-        if (data.message) {
+        if (data.message){
           setUser(null);
           toggle(false);
           navigate('/');
