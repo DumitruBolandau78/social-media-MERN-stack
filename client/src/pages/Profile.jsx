@@ -1,10 +1,22 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import Container from '../components/Container'
 import { UserContext } from '../context/UserContext';
 import { domain } from '../utils/variables';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Profile = () => {
   const { user } = useContext(UserContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(location.pathname === '/profile'){
+      if(!user){
+        alert('To access PROFILE please LOG IN.');
+        navigate('/');
+      }
+    }
+  }, []);
 
   return (
     <Container>
@@ -25,6 +37,7 @@ const Profile = () => {
       <div className='grid grid-cols-2 border-t-2 border-white mt-6 pt-3'>
         <div className='justify-self-center'>POSTS</div>
         <div className='justify-self-center'>SAVED</div>
+
       </div>
     </Container>
   )

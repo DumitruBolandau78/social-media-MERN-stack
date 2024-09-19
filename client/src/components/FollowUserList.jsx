@@ -10,7 +10,7 @@ const FollowUserList = () => {
       credentials: 'include'
     })
     .then(res => res.json())
-    .then(data => setUsers(data))
+    .then(data => setUsers(data.users))
     .catch(err => console.log(err));
   }
 

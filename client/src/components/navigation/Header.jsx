@@ -1,12 +1,13 @@
 import { useContext, useState } from "react";
 import { UserContext } from '../../context/UserContext.jsx';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Modal from "../Modal.jsx";
 import { domain } from "../../utils/variables.jsx";
 
 const Header = () => {
   const { user, setUser } = useContext(UserContext);
   const [isOpenModal, toggle] = useState(false);
+  const navigate = useNavigate();
 
   async function logoutHandler() {
     await fetch(domain + '/api/logout', {
@@ -18,6 +19,7 @@ const Header = () => {
         if (data.message) {
           setUser(null);
           toggle(false);
+          navigate('/');
         } else {
           console.log(data);
         }

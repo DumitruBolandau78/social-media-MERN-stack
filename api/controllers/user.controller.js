@@ -66,8 +66,11 @@ export async function logout(req, res) {
 export async function getUsers(req, res) {
   try {
     const users = await User.find({}).select('name username avatarUrl').sort({ createdAt: -1 }).limit(5);
-    if (users) {
-      res.json(users);
+    if (req.session.user) {
+      const filteredUsers = users.filter(user => user.username !== req.session.user.username);
+      res.json({users: filteredUsers});
+    } else {
+      res.json({users});
     }
   } catch (error) {
     console.log(error);

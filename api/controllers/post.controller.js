@@ -1,6 +1,16 @@
 import User from "../models/User.js";
 import Post from '../models/Post.js';
 
+export async function getCurrentUserPosts(req, res) {
+  try {
+    if(req.session.user){
+      
+    }
+  } catch (error) {
+    
+  }
+}
+
 export async function getPosts(req, res){
   const page = parseInt(req.query.page) || 1;
   const limit = 5;
