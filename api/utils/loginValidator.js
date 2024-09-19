@@ -16,8 +16,8 @@ const loginValidator = [
   }),
   body('password', 'Password should be at least 6 characters.').isLength({ min: 6, max: 20 }).isAlphanumeric().custom(async (value, { req }) => {
     try {
-      const user = await User.findOne({ email: req.body.email });
-
+      const user = await User.findOne({ username: req.body.username });
+      
       if (user) {
         const equalPasswords = await bcrypt.compare(value, user.password);
 

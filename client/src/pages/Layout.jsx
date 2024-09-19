@@ -6,16 +6,19 @@ import RightSide from '../components/RightSide';
 const Layout = () => {
   return (
     <>
-      <Header />
       <div className='flex'>
-        <div className="container grid grid-cols-12 ">
-          <Aside />
+        <Header />
+        <div className="grid grid-cols-12 w-full mt-[100px]">
+          <div className='col-span-2'></div>
           <Outlet />
+          <div className='col-span-3'></div>
+        </div>
+        <div className="fixed top-0 left-0 w-full grid grid-cols-12 mt-[100px]">
+          <Aside />
+          <div className='col-span-7 relative -z-50'></div>
           <RightSide />
         </div>
       </div>
-
-      
     </>
   )
 }

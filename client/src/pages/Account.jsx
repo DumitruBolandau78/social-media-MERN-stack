@@ -18,7 +18,7 @@ const Account = () => {
   const { setUser } = useContext(UserContext);
 
   const fetchUser = async () => {
-    await fetch(domain + '/api/getUser', {
+    await fetch(domain + '/api/getCurrentUser', {
       method: 'GET',
       credentials: 'include'
     })
@@ -29,7 +29,7 @@ const Account = () => {
           navigate('/');
         }
       })
-      .catch(e => console.log(e));
+      .catch(e => console.error(e));
   }
 
   useEffect(() => {

@@ -16,7 +16,7 @@ const userSchema = new Schema({
   },
   notifications: [
     {
-      userId: {
+      user: {
         type: Schema.Types.ObjectId,
         ref: 'User'
       },
@@ -40,6 +40,12 @@ const userSchema = new Schema({
     unique: true
   },
   posts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Post'
+    }
+  ],
+  saved: [
     {
       type: Schema.Types.ObjectId,
       ref: 'Post'

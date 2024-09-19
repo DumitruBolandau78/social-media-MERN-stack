@@ -4,15 +4,23 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import session from 'express-session';
 import MongoDBStore from 'connect-mongodb-session';
-import userController from './controllers/user.controller.js';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import userRoutes from './Routes/User.route.js';
+import postRoutes from './Routes/Post.route.js';
 
 env.config();
 const PORT = 1000 || process.env.PORT;
 
 const app = express();
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
+
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -40,7 +48,7 @@ app.use(
         saveUninitialized: false,
         store,
         cookie: {
-            maxAge: 1000 * 60 * 60 * 24 // Session expiry time (optional)
+            maxAge: 1000 * 60 * 60 * 24 * 30 // Session expiry time (optional)
         }
     })
 );
@@ -49,8 +57,8 @@ app.get('/', (req, res) => {
     res.send('Hi');
 });
 
-app.use('/api', userController);
 app.use('/api', userRoutes);
+app.use('/api', postRoutes);
 
 async function start() {
     try {

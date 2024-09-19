@@ -38,10 +38,10 @@ const containerVariant = {
   exit: { top: "-50%" }
 };
 // eslint-disable-next-line react/prop-types
-const Modal = ({ handleClose, children, isOpen }) => {
+const Modal = ({ handleClose, children, isOpenModal }) => {
   return (
     <AnimatePresence>
-      {isOpen && (
+      {isOpenModal && (
         <Overlay
           initial={"initial"}
           animate={"isOpen"}
@@ -78,7 +78,10 @@ const Modal = ({ handleClose, children, isOpen }) => {
                 strokeWidth="2"
               />
             </CloseButton>
+            <div className="relative z-[1000]">
+
             {children}
+            </div>
           </ModalContainer>
         </Overlay>
       )}
