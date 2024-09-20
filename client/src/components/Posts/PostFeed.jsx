@@ -1,16 +1,11 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { domain } from '../../utils/variables'
 import { UserContext } from '../../context/UserContext';
+import useDateFormat from '../../hooks/useDateFormat';
 
 // eslint-disable-next-line react/prop-types
 const Post = ({ _id, description, likes, imgUrl, createdAt, comments, avatarUrl, saved, name, username }) => {
-  const date = new Date(createdAt);
-  const day = date.getDate().toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const year = date.getFullYear();
-  const hours = date.getHours().toString().padStart(2, '0');
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  const formattedDate = `${day}/${month}/${year} at ${hours}:${minutes}`;
+  const formattedDate = useDateFormat(createdAt);
 
   const id = useRef();
   const { user } = useContext(UserContext);

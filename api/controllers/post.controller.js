@@ -1,22 +1,6 @@
 import User from "../models/User.js";
 import Post from '../models/Post.js';
 
-export async function getCurrentUserPosts(req, res) {
-  try {
-    if (req.session.user) {
-      const page = parseInt(req.query.page) || 1;
-      const limit = 5;
-      const skip = (page - 1) * limit;
-
-      const userPosts = await User.findById(req.session.user._id).populate('posts', 'imgUrl description likes comments').sort({ createdAt: -1 }).skip(skip).limit(limit).exec();
-      
-      res.json(userPosts);
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-}
-
 export async function getPosts(req, res) {
   const page = parseInt(req.query.page) || 1;
   const limit = 5;

@@ -9,7 +9,6 @@ const PostList = ({ posts, setPosts }) => {
   const fetchPosts = async () => {
     const response = await fetch(domain + `/api/getPosts?page=${page}`, { credentials: 'include' });
     const data = await response.json();
-    console.log(data);
 
     if(data.length === 0){
       setHasMore(false);
@@ -46,7 +45,7 @@ const PostList = ({ posts, setPosts }) => {
   return (
     <div className='mt-7'>
       { posts.map(post => <PostFeed key={'post-feed-' + post._id} {...post} username={post.user.username} name={post.user.name} avatarUrl={post.user.avatarUrl} />)}
-      {hasMore? <div className='text-center' ref={lastElem}>Uploading posts...</div> : <div className='text-center font-medium' ref={lastElem}>No more posts!</div>}
+      {hasMore? <div className='text-center' ref={lastElem}>Uploading posts...</div> : <div className='text-center font-medium'>No more posts!</div>}
     </div>
   ) 
 }

@@ -11,15 +11,17 @@ const ProfilePostList = () => {
     const response = await fetch(domain + `/api/getCurrentUserPosts?page=${page}`, { credentials: 'include' });
     const data = await response.json();
 
-    if (data.posts.length === 0) {
-      setHasMore(false);
-    } else if(data.posts.length > 0 && data.posts.length < 5){
-      setHasMore(false);
-      setCurrentUserPosts(prevPosts => [...prevPosts, ...data.posts]);
-      setPage(prevPage => prevPage + 1);
-    } else {
-      setCurrentUserPosts(prevPosts => [...prevPosts, ...data.posts]);
-      setPage(prevPage => prevPage + 1);
+    if(data){
+      if (data.posts.length === 0) {
+        setHasMore(false);
+      } else if(data.posts.length > 0 && data.posts.length < 5){
+        setHasMore(false);
+        setCurrentUserPosts(prevPosts => [...prevPosts, ...data.posts]);
+        setPage(prevPage => prevPage + 1);
+      } else {
+        setCurrentUserPosts(prevPosts => [...prevPosts, ...data.posts]);
+        setPage(prevPage => prevPage + 1);
+      }
     }
   };
 
@@ -50,7 +52,7 @@ const ProfilePostList = () => {
   return (
     <div className='mt-7 flex flex-col items-center'>
       {currentUserPosts.map(post => <ProfilePost key={'profile-post-' + post._id} {...post} />)}
-      {hasMore? <div className='text-center' ref={lastElem}>Uploading posts...</div> : <div className='text-center font-medium' ref={lastElem}>No more posts!</div>}
+      {hasMore? <div className='text-center' ref={lastElem}>Uploading posts...</div> : <div className='text-center font-medium'>No more posts!</div>}
     </div>
   )
 }

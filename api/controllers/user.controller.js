@@ -77,3 +77,19 @@ export async function getUsers(req, res) {
     res.json({ error });
   }
 }
+
+export async function getCurrentUserPosts(req, res) {
+  try {
+    if (req.session.user) {
+      const page = parseInt(req.query.page) || 1;
+      const limit = 5;
+      const skip = (page - 1) * limit;
+
+      const userPosts = await User.findById(req.session.user._id).populate('posts', 'imgUrl createdAt description likes comments').sort({ createdAt: -1 }).skip(skip).limit(limit).exec();
+      
+      res.json(userPosts);
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}

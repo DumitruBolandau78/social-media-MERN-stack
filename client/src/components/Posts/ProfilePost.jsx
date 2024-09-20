@@ -2,13 +2,16 @@ import { useContext } from "react";
 import { useRef, useState } from "react"
 import { UserContext } from "../../context/UserContext";
 import { domain } from "../../utils/variables";
+import useDateFormat from "../../hooks/useDateFormat";
 
 
-const ProfilePost = ({ imgUrl, description, likes, comments, _id }) => {
+// eslint-disable-next-line react/prop-types
+const ProfilePost = ({ imgUrl, description, likes, comments, createdAt, _id }) => {
   const { user } = useContext(UserContext);
   const id = useRef();
   const [likesLenght, setLikesLength] = useState(likes.length);
   const [isLike, setIsLike] = useState(user && likes.includes(user._id));
+  const dateFormat = useDateFormat(createdAt);
 
   async function likePostHandler() {
     await fetch(domain + '/api/likePostToggle', {
@@ -31,10 +34,13 @@ const ProfilePost = ({ imgUrl, description, likes, comments, _id }) => {
       })
       .catch(err => console.log(err));
   }
-  
+
   return (
     <div className='shadow-lg bg-white text-gray-900 mb-10 p-10 rounded-md w-2/3'>
       <input ref={id} type="hidden" name="postID" value={_id} />
+      <div className="font-medium">
+        {'Posted at ' + dateFormat}
+      </div>
       <p className='mt-4'>{description}</p>
       <div className='flex justify-center my-10'>
         <img className='object-center object-cover max-w-[500px] shadow-md max-h-[500px]' src={domain + imgUrl} alt="post image" />
@@ -60,6 +66,11 @@ const ProfilePost = ({ imgUrl, description, likes, comments, _id }) => {
         <div className='flex gap-3 w-[80px] justify-center'>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 cursor-pointer">
             <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+          </svg>
+        </div>
+        <div className='flex gap-3 w-[80px] justify-center'>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6 cursor-pointer text-red-600">
+            <path fillRule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clipRule="evenodd" />
           </svg>
         </div>
       </div>
