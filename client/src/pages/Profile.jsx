@@ -21,7 +21,6 @@ const Profile = () => {
     })
       .then(res => res.json())
       .then(data => {
-        console.log('toggle');
         if (data.user) {
           setUser(data.user);
         } else {
@@ -51,9 +50,8 @@ const Profile = () => {
       <div className='grid grid-cols-2 border-t-2 border-white mt-6 pt-3'>
         <div onClick={() => setActiveTab('posts')} className={activeTab === 'posts'? 'justify-self-center cursor-pointer font-semibold' : 'justify-self-center cursor-pointer'}>POSTS</div>
         <div onClick={() => setActiveTab('saved')} className={activeTab === 'saved'? 'justify-self-center cursor-pointer font-semibold' : 'justify-self-center cursor-pointer'}>SAVED</div>
-        
-        <div onClick={() => setActiveTab('posts')} className={activeTab === 'posts'? 'col-span-2' : 'hidden'}><ProfilePostList /> </div>
-        <div onClick={() => setActiveTab('saved')} className={activeTab === 'saved'? 'col-span-2' : 'hidden'}><div></div> </div>
+        <div className={activeTab === 'posts'? 'col-span-2' : 'col-span-2 hidden'}><ProfilePostList /></div>
+        <div className={activeTab === 'saved'? 'col-span-2' : 'col-span-2 hidden'}><div></div> </div>
       </div>
     </Container>
   )

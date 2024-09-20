@@ -1,7 +1,7 @@
 import Container from '../components/Container';
 import StorieList from '../components/Stories/StorieList';
 import Modal from '../components/Modal';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { UserContext } from '../context/UserContext';
 import { domain } from '../utils/variables';
 import PostFeedList from '../components/Posts/PostFeedList';
