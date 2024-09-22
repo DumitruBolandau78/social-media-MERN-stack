@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { domain } from '../../utils/variables';
-import ProfilePost from './ProfilePost';
+import PostFeed from './PostFeed';
 
-const ProfilePostList = () => {
+const ProfileSavedPostsList = () => {
   const [page, setPage] = useState(1);
-  const [currentUserPosts, setCurrentUserPosts] = useState([]);
+  const [currentUserSavedPosts, setCurrentUserSavedPosts] = useState([]);
   const [hasMore, setHasMore] = useState(true);
 
   const fetchPosts = async () => {
-    const response = await fetch(domain + `/api/getCurrentUserPosts?page=${page}`, { credentials: 'include' });
+    const response = await fetch(domain + `/api/getCurrentUserSavedPosts?page=${page}`, { credentials: 'include' });
     const data = await response.json();
     
     if(data){
@@ -16,10 +16,10 @@ const ProfilePostList = () => {
         setHasMore(false);
       } else if(data.length > 0 && data.length < 5){
         setHasMore(false);
-        setCurrentUserPosts(prevPosts => [...prevPosts, ...data]);
+        setCurrentUserSavedPosts(prevPosts => [...prevPosts, ...data]);
         setPage(prevPage => prevPage + 1);
       } else {
-        setCurrentUserPosts(prevPosts => [...prevPosts, ...data]);
+        setCurrentUserSavedPosts(prevPosts => [...prevPosts, ...data]);
         setPage(prevPage => prevPage + 1);
       }
     }
@@ -47,14 +47,14 @@ const ProfilePostList = () => {
         observer.disconnect();
       }
     }
-  }, [currentUserPosts]);
+  }, [currentUserSavedPosts]);
 
   return (
     <div className='mt-7 flex flex-col items-center'>
-      {currentUserPosts.map(post => <ProfilePost key={'profile-post-' + post._id} {...post} />)}
+      { currentUserSavedPosts.map(post => <PostFeed key={'post-feed-' + post._id} {...post} username={post.user.username} name={post.user.name} avatarUrl={post.user.avatarUrl} />)}
       {hasMore? <div className='text-center' ref={lastElem}>Uploading posts...</div> : <div className='text-center font-medium'>No more posts!</div>}
     </div>
   )
 }
 
-export default ProfilePostList
+export default ProfileSavedPostsList;

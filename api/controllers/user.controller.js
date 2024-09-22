@@ -68,9 +68,9 @@ export async function getUsers(req, res) {
     const users = await User.find({}).select('name username avatarUrl').sort({ createdAt: -1 }).limit(5);
     if (req.session.user) {
       const filteredUsers = users.filter(user => user.username !== req.session.user.username);
-      res.json({users: filteredUsers});
+      res.json({ users: filteredUsers });
     } else {
-      res.json({users});
+      res.json({ users });
     }
   } catch (error) {
     console.log(error);
@@ -85,11 +85,44 @@ export async function getCurrentUserPosts(req, res) {
       const limit = 5;
       const skip = (page - 1) * limit;
 
-      const userPosts = await User.findById(req.session.user._id).populate('posts', 'imgUrl createdAt description likes comments').sort({ createdAt: -1 }).skip(skip).limit(limit).exec();
-      
-      res.json(userPosts);
+      const userPosts = await User.findById(req.session.user._id).populate('posts', 'imgUrl createdAt description likes comments');
+
+      // Sort user posts by createdAt time in descending order
+      userPosts.posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+      // Get the last 5 posts
+      const paginatedPosts = userPosts.posts.slice(skip, skip + limit);
+      res.json(paginatedPosts);
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+}
+
+export async function getCurrentUserSavedPosts(req, res) {
+  try {
+      if (req.session.user) {
+          const page = parseInt(req.query.page) || 1;
+          const limit = 5;
+          const skip = (page - 1) * limit;
+
+          const userPosts = await User.findById(req.session.user._id).populate({
+              path: 'saved',
+              populate: {
+                  path: 'user',
+                  select: 'name username avatarUrl'
+              },
+              select: 'imgUrl user createdAt description likes comments'
+          });
+
+          // Sort user posts by createdAt time in descending order
+          userPosts.saved.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+          // Get the last 5 posts
+          const paginatedPosts = userPosts.saved.slice(skip, skip + limit);
+          res.json(paginatedPosts);
+      }
+  } catch (error) {
+      res.status(500).json({ message: error.message });
   }
 }

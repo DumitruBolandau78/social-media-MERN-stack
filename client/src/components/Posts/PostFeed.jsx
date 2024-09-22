@@ -68,8 +68,8 @@ const Post = ({ _id, description, likes, imgUrl, createdAt, comments, avatarUrl,
       <input ref={id} type="hidden" name="postID" value={_id} />
       <div className='flex justify-between shadow-md'>
         <div className='flex gap-5 items-center p-2 rounded-lg'>
-          <div className='rounded-full p-3 shadow-md'>
-            <img className='w-full max-w-[40px]' src={domain + avatarUrl} alt="user avatar" />
+          <div className='rounded-full p-3'>
+            <img className='w-full max-w-[40px] shadow-md' src={domain + avatarUrl} alt="user avatar" />
           </div>
           <div>
             <div className='flex gap-2 items-start flex-col'>

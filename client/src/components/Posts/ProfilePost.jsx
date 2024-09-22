@@ -43,7 +43,7 @@ const ProfilePost = ({ imgUrl, description, likes, comments, createdAt, _id }) =
       </div>
       <p className='mt-4'>{description}</p>
       <div className='flex justify-center my-10'>
-        <img className='object-center object-cover max-w-[500px] shadow-md max-h-[500px]' src={domain + imgUrl} alt="post image" />
+        <img className='object-center object-cover max-w-[500px] max-h-[500px] shadow-md' src={domain + imgUrl} alt="post image" />
       </div>
       <div className='border-t-[1px] border-gray-200 flex items-center justify-around pt-6'>
         <div className='flex gap-3 w-[80px] justify-center'>

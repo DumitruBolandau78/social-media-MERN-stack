@@ -4,6 +4,7 @@ import { UserContext } from '../context/UserContext';
 import { domain } from '../utils/variables';
 import { useNavigate } from 'react-router-dom';
 import ProfilePostList from '../components/Posts/ProfilePostList';
+import ProfileSavedPostsList from '../components/Posts/ProfileSavedPostsList';
 
 const Profile = () => {
   const { user, setUser } = useContext(UserContext);
@@ -51,7 +52,7 @@ const Profile = () => {
         <div onClick={() => setActiveTab('posts')} className={activeTab === 'posts'? 'justify-self-center cursor-pointer font-semibold' : 'justify-self-center cursor-pointer'}>POSTS</div>
         <div onClick={() => setActiveTab('saved')} className={activeTab === 'saved'? 'justify-self-center cursor-pointer font-semibold' : 'justify-self-center cursor-pointer'}>SAVED</div>
         <div className={activeTab === 'posts'? 'col-span-2' : 'col-span-2 hidden'}><ProfilePostList /></div>
-        <div className={activeTab === 'saved'? 'col-span-2' : 'col-span-2 hidden'}><div></div> </div>
+        <div className={activeTab === 'saved'? 'col-span-2' : 'col-span-2 hidden'}><ProfileSavedPostsList /> </div>
       </div>
     </Container>
   )

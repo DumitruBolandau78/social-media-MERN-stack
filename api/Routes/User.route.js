@@ -1,7 +1,7 @@
 import { Router } from "express"
 import registerValidator from '../utils/registerValidator.js';
 import loginValidator from '../utils/loginValidator.js';
-import { getCurrentUser, getCurrentUserPosts, getUsers, login, logout, register } from "../controllers/user.controller.js";
+import { getCurrentUser, getCurrentUserPosts, getCurrentUserSavedPosts, getUsers, login, logout, register } from "../controllers/user.controller.js";
 const router = Router();
 
 router.get('/getUsers', getUsers);
@@ -10,6 +10,7 @@ router.post('/logout', logout);
 router.post('/login', loginValidator, login)
 router.post('/register', registerValidator, register);
 router.get('/getCurrentUserPosts', getCurrentUserPosts);
+router.get('/getCurrentUserSavedPosts', getCurrentUserSavedPosts);
 
 
 export default router;
