@@ -134,18 +134,18 @@ export async function followUser(req, res) {
     if (req.session.user) {
       const post = await Post.findById(postID).populate('user', 'username');
       const currentUserFollowing = await User.findById(req.session.user._id).select('following').populate('following', 'username');
-      
+
       let idx;
       let id;
 
-      if(userID){
+      if (userID) {
         id = userID;
         idx = currentUserFollowing.following.findIndex(user => user._id.toString() === userID);
       } else {
         id = post.user._id;
         idx = currentUserFollowing.following.findIndex(user => user.username === post.user.username);
       }
-      
+
       if (idx >= 0) {
         await User.findByIdAndUpdate(req.session.user._id, { $pull: { 'following': id } })
         await User.findByIdAndUpdate(id, { $pull: { 'followers': req.session.user._id } })
@@ -183,6 +183,25 @@ export async function isUserFollowed(req, res) {
       } else {
         res.status(200).json({ msg: false });
       }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function deletePost(req, res) {
+  const { postID } = req.body;
+  try {
+    if (req.session.user) {  
+      const user = await User.findById(req.session.user._id).select('posts');
+      const postIndex = user.posts.findIndex(post => post._id.toString() === postID);
+      if (postIndex !== -1) {
+        user.posts.splice(postIndex, 1); // Remove the post from the array
+      }
+      await user.save();
+      await Post.findByIdAndDelete(postID);
+
+      res.status(200).json({msg: 'Post deleted successful.'});
     }
   } catch (error) {
     console.log(error);

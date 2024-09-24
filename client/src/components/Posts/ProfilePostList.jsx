@@ -51,7 +51,7 @@ const ProfilePostList = () => {
 
   return (
     <div className='mt-7 flex flex-col items-center'>
-      {currentUserPosts.map(post => <ProfilePost key={'profile-post-' + post._id} {...post} />)}
+      {currentUserPosts.map(post => <ProfilePost currentUserPosts={currentUserPosts} setCurrentUserPosts={setCurrentUserPosts} key={'profile-post-' + post._id} {...post} />)}
       {hasMore? <div className='text-center' ref={lastElem}>Uploading posts...</div> : <div className='text-center font-medium'>No more posts!</div>}
     </div>
   )

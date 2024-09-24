@@ -44,7 +44,7 @@ const PostList = ({ posts, setPosts }) => {
 
   return (
     <div className='mt-7'>
-      { posts.map(post => <PostFeed key={'post-feed-' + post._id} {...post} userID={post.user._id} username={post.user.username} name={post.user.name} avatarUrl={post.user.avatarUrl} />)}
+      { posts.map(post => <PostFeed posts={posts} setPosts={setPosts} key={'post-feed-' + post._id} {...post} userID={post.user._id} username={post.user.username} name={post.user.name} avatarUrl={post.user.avatarUrl} />)}
       {hasMore? <div className='text-center' ref={lastElem}>Uploading posts...</div> : <div className='text-center font-medium'>No more posts!</div>}
     </div>
   ) 
