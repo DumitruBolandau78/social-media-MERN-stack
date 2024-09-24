@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { validationResult } from "express-validator";
 import User from "../models/User.js";
+import Post from '../models/Post.js';
 
 export async function getCurrentUser(req, res) {
   if (req.session.user) {
@@ -101,28 +102,89 @@ export async function getCurrentUserPosts(req, res) {
 
 export async function getCurrentUserSavedPosts(req, res) {
   try {
-      if (req.session.user) {
-          const page = parseInt(req.query.page) || 1;
-          const limit = 5;
-          const skip = (page - 1) * limit;
+    if (req.session.user) {
+      const page = parseInt(req.query.page) || 1;
+      const limit = 5;
+      const skip = (page - 1) * limit;
 
-          const userPosts = await User.findById(req.session.user._id).populate({
-              path: 'saved',
-              populate: {
-                  path: 'user',
-                  select: 'name username avatarUrl'
-              },
-              select: 'imgUrl user createdAt description likes comments'
-          });
+      const userPosts = await User.findById(req.session.user._id).populate({
+        path: 'saved',
+        populate: {
+          path: 'user',
+          select: 'name username avatarUrl'
+        },
+        select: 'imgUrl user createdAt description likes comments'
+      });
 
-          // Sort user posts by createdAt time in descending order
-          userPosts.saved.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      // Sort user posts by createdAt time in descending order
+      userPosts.saved.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-          // Get the last 5 posts
-          const paginatedPosts = userPosts.saved.slice(skip, skip + limit);
-          res.json(paginatedPosts);
-      }
+      // Get the last 5 posts
+      const paginatedPosts = userPosts.saved.slice(skip, skip + limit);
+      res.json(paginatedPosts);
+    }
   } catch (error) {
-      res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message });
+  }
+}
+
+export async function followUser(req, res) {
+  const { postID, userID } = req.body;
+  try {
+    if (req.session.user) {
+      const post = await Post.findById(postID).populate('user', 'username');
+      const currentUserFollowing = await User.findById(req.session.user._id).select('following').populate('following', 'username');
+      
+      let idx;
+      let id;
+
+      if(userID){
+        id = userID;
+        idx = currentUserFollowing.following.findIndex(user => user._id.toString() === userID);
+      } else {
+        id = post.user._id;
+        idx = currentUserFollowing.following.findIndex(user => user.username === post.user.username);
+      }
+      
+      if (idx >= 0) {
+        await User.findByIdAndUpdate(req.session.user._id, { $pull: { 'following': id } })
+        await User.findByIdAndUpdate(id, { $pull: { 'followers': req.session.user._id } })
+        res.status(200).json({ msg: false });
+      } else {
+        await User.findByIdAndUpdate(req.session.user._id, { $push: { 'following': id } })
+        await User.findByIdAndUpdate(id, { $push: { 'followers': req.session.user._id } })
+        res.status(200).json({ msg: true });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function isUserFollowed(req, res) {
+  const { postID, userID } = req.query;
+
+  try {
+    let user;
+    let post;
+    if (userID) {
+      user = await User.findById(userID).select('username');
+    } else {
+      post = await Post.findById(postID).select('user');
+      user = await User.findById(post.user).select('username');
+    }
+
+    if (req.session.user) {
+      const currentUser = await User.findById(req.session.user._id).select('following').populate('following', 'username');
+      const idx = currentUser.following.findIndex(u => u.username === user.username);
+
+      if (idx >= 0) {
+        res.status(200).json({ msg: true });
+      } else {
+        res.status(200).json({ msg: false });
+      }
+    }
+  } catch (error) {
+    console.log(error);
   }
 }

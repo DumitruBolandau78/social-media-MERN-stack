@@ -14,6 +14,7 @@ const ProfilePost = ({ imgUrl, description, likes, comments, createdAt, _id }) =
   const dateFormat = useDateFormat(createdAt);
 
   async function likePostHandler() {
+    setIsLike(!isLike);
     await fetch(domain + '/api/likePostToggle', {
       headers: {
         'Content-Type': 'application/json',
@@ -25,10 +26,8 @@ const ProfilePost = ({ imgUrl, description, likes, comments, createdAt, _id }) =
       .then(res => res.json())
       .then(data => {
         if (data.message === 'Like') {
-          setIsLike(true);
           setLikesLength(prev => prev + 1);
         } else if (data.message === 'Unlike') {
-          setIsLike(false);
           setLikesLength(prev => prev - 1);
         }
       })

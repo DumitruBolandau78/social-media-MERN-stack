@@ -4,39 +4,73 @@ import { UserContext } from '../../context/UserContext';
 import useDateFormat from '../../hooks/useDateFormat';
 
 // eslint-disable-next-line react/prop-types
-const Post = ({ _id, description, likes, imgUrl, createdAt, comments, avatarUrl, saved, name, username }) => {
+const Post = ({ _id, description, likes, imgUrl, createdAt, comments, avatarUrl, saved, name, username, userID }) => {
   const formattedDate = useDateFormat(createdAt);
-
-  const id = useRef();
   const { user } = useContext(UserContext);
   const [likesLenght, setLikesLength] = useState(likes.length);
   const [isLike, setIsLike] = useState(user && likes.includes(user._id));
   const [isSaved, setIsSaved] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
 
   useEffect(() => {
     user?.saved.forEach(post => {
-      if (post.toString() === id.current.value) {
+      if (post.toString() === _id) {
         setIsSaved(true);
       }
     });
+
+    isUserFollowed();
   }, []);
 
+  function isUserFollowed() {
+    fetch(domain + `/api/isUserFollowed?postID=${_id}`, {
+      method: 'GET',
+      credentials: 'include'
+    })
+      .then(res => res.json())
+      .then(data => {
+        setIsFollowing(data.msg);
+      }).catch((err) => console.log(err));
+  }
+
+  async function followUserHandler() {
+    if (!user) {
+      return console.log('login for this');
+    }
+
+    setIsFollowing(!isFollowing);
+
+    document.querySelectorAll('.user-' + userID).forEach(btn => {
+      btn.textContent = `${isFollowing ? 'Follow' : 'Unfollow'}`;
+    });
+
+    await fetch(domain + '/api/followUser', {
+      headers: {
+        "Content-Type": "application/json"
+      },
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify({
+        postID: _id
+      })
+    }).catch(err => console.error(err));
+  }
+
   async function likePostHandler() {
+    setIsLike(!isLike);
     await fetch(domain + '/api/likePostToggle', {
       headers: {
         'Content-Type': 'application/json',
       },
       method: "POST",
       credentials: 'include',
-      body: JSON.stringify({ postID: id.current.value })
+      body: JSON.stringify({ postID: _id })
     })
       .then(res => res.json())
       .then(data => {
         if (data.message === 'Like') {
-          setIsLike(true);
           setLikesLength(prev => prev + 1);
         } else if (data.message === 'Unlike') {
-          setIsLike(false);
           setLikesLength(prev => prev - 1);
         }
       })
@@ -44,39 +78,33 @@ const Post = ({ _id, description, likes, imgUrl, createdAt, comments, avatarUrl,
   }
 
   async function savePostHandler() {
+    setIsSaved(!isSaved);
     await fetch(domain + '/api/savePostToggle', {
       headers: {
         'Content-Type': 'application/json',
       },
       method: "POST",
       credentials: 'include',
-      body: JSON.stringify({ postID: id.current.value })
+      body: JSON.stringify({ postID: _id })
     })
-      .then(res => res.json())
-      .then(data => {
-        if (data.message === 'Saved') {
-          setIsSaved(true);
-        } else if (data.message === 'Unsaved') {
-          setIsSaved(false);
-        }
-      })
-      .catch(err => console.log(err));
+    .catch(err => console.log(err));
   }
 
   return (
     <div className='shadow-lg bg-white text-gray-900 mb-10 p-10 rounded-md'>
-      <input ref={id} type="hidden" name="postID" value={_id} />
+      <input type="hidden" name="postID" value={_id} />
       <div className='flex justify-between shadow-md'>
         <div className='flex gap-5 items-center p-2 rounded-lg'>
-          <div className='rounded-full p-3'>
-            <img className='w-full max-w-[40px] shadow-md' src={domain + avatarUrl} alt="user avatar" />
+          <div className='rounded-full p-3 shadow-md'>
+            <img className='w-full max-w-[40px]' src={domain + avatarUrl} alt="user avatar" />
           </div>
           <div>
             <div className='flex gap-2 items-start flex-col'>
               <div className='font-medium text-md'>
-                {user?.username === username ? name + ' (You)' : name}
+                {user?.username === username ? name + ' (You)' : <div className='cursor-pointer'>{name}</div>}
               </div>
-              <button className='bg-gray-900 text-white font-normal rounded-full py-1 px-6'>Follow</button>
+              {user?.username === username ? '' : <button onClick={followUserHandler} className={'bg-gray-900 text-white font-normal rounded-full py-1 px-6 user-' + userID}>{isFollowing ? 'Unfollow' : 'Follow'}</button>}
+
             </div>
           </div>
         </div>
@@ -133,4 +161,4 @@ const Post = ({ _id, description, likes, imgUrl, createdAt, comments, avatarUrl,
   )
 }
 
-export default Post
+export default Post;
