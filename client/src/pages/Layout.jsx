@@ -1,5 +1,5 @@
 import Aside from '../components/Aside';
-import Header from '../components/navigation/Header'
+import Header from '../components/Navigation/Header'
 import { Outlet } from 'react-router-dom'
 import RightSide from '../components/RightSide';
 

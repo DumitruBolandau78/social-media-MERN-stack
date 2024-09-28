@@ -70,3 +70,47 @@ export async function savePostToggle(req, res) {
     console.log(error);
   }
 }
+
+export async function getPostComments(req, res) {
+  const { postID } = req.query;
+  try {
+    if(req.session.user){
+      const populatedComment = await Post.findById(postID).select('comments').populate({
+        path: 'comments',
+        populate: {
+          path: 'user',
+          select: 'name username avatarUrl'
+        },
+        select: 'message createdAt'
+      }).exec();
+
+      res.status(200).json(populatedComment);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function postComment(req, res) {
+  const { comment, postID } = req.body;
+  try {
+    if(req.session.user){   
+      await Post.findByIdAndUpdate(postID, { $push: {comments: { user: req.session.user._id, message: comment }} });
+
+      const populatedComment = await Post.findById(postID).select('comments').populate({
+        path: 'comments',
+        populate: {
+          path: 'user',
+          select: 'name avatarUrl username'
+        },
+        select: 'message createdAt'
+      }).exec();
+
+
+
+      res.status(200).json(populatedComment);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}

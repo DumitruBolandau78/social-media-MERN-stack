@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import FollowUser from "./FollowUser"
-import { domain } from "../utils/variables";
+import { domain } from "../../utils/variables";
 
 const FollowUserList = () => {
   const [users, setUsers] = useState([]);

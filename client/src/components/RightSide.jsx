@@ -1,4 +1,4 @@
-import FollowUserList from "./FollowUserList"
+import FollowUserList from "./Follow/FollowUserList"
 
 const RightSide = () => {
   return (

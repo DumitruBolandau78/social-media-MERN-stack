@@ -1,13 +1,11 @@
 import Container from '../components/Container';
 import StorieList from '../components/Stories/StorieList';
 import Modal from '../components/Modal';
-import { useContext, useState } from 'react';
-import { UserContext } from '../context/UserContext';
+import { useState } from 'react';
 import { domain } from '../utils/variables';
 import PostFeedList from '../components/Posts/PostFeedList';
 
 const Feed = () => {
-  const { user } = useContext(UserContext);
   const [isOpenModal, toggle] = useState();
   const [desc, setDesc] = useState('');
   const [file, setFile] = useState();
@@ -55,7 +53,6 @@ const Feed = () => {
       <Modal isOpenModal={isOpenModal} handleClose={() => handlOpenModal(false)}>
         <form onSubmit={postHandler} className='flex flex-col min-w-[500px] w-full'>
           <p className='text-red-600 font-normal text-sm'>Write a message*</p>
-          <input type="hidden" name="userId" value={user?._id} />
           <textarea required maxLength={500} className='w-full h-24 shadow-lg my-3 resize-none py-2 px-4 text-gray-900' value={desc} onChange={e => setDesc(e.target.value)} placeholder='Your message...' name="desc" id=""></textarea>
           <p className='text-red-600 font-normal mb-2 text-sm'>Uploading an image is required*</p>
           {notification && (<p className='text-red-600 font-normal mb-2 text-2xl'>{notification}</p>)}

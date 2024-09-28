@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { domain } from "../utils/variables";
-import { UserContext } from "../context/UserContext";
+import { domain } from "../../utils/variables";
+import { UserContext } from "../../context/UserContext";
 
 // eslint-disable-next-line react/prop-types
 const FollowUser = ({ avatarUrl, name, username, _id }) => {
