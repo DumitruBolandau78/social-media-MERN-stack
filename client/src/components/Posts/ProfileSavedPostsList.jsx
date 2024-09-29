@@ -58,7 +58,7 @@ const ProfileSavedPostsList = () => {
 
   return (
     <div className='mt-7 flex flex-col items-center'>
-      { currentUserSavedPosts.map(post => <PostFeed setComments={setComments} handlOpenModal={handlOpenModal} key={'post-feed-' + post._id} {...post} username={post.user.username} name={post.user.name} avatarUrl={post.user.avatarUrl} />)}
+      { currentUserSavedPosts.map(post => <PostFeed userID={post.user._id} setComments={setComments} handlOpenModal={handlOpenModal} key={'post-feed-' + post._id} {...post} username={post.user.username} name={post.user.name} avatarUrl={post.user.avatarUrl} />)}
       {hasMore? <div className='text-center' ref={lastElem}>Uploading posts...</div> : <div className='text-center font-medium'>No more posts!</div>}
       <CommentBox toggle={toggle} isOpenModal={isOpenModal} comments={comments} setComments={setComments}  />
     </div>

@@ -27,7 +27,7 @@ const FollowUser = ({ avatarUrl, name, username, _id }) => {
       return console.log('login for this');
     }
 
-    setIsFollowing(!isFollowing);
+    setIsFollowing(prev => !prev);
 
     document.querySelectorAll('.user-' + _id).forEach(btn => {
       btn.textContent = `${!isFollowing ? 'Unfollow' : 'Follow'}`;
