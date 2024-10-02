@@ -8,7 +8,7 @@ export async function getCurrentUser(req, res) {
     const populatedUser = await User.findOne({ username: req.session.user.username }).select('-password').exec();
     res.json({ user: populatedUser });
   } else {
-    return res.status(404).json({ error: 'Could not find user or is authenticated' });
+    res.json({ error: 'Could not find user or is authenticated' });
   }
 };
 
@@ -203,6 +203,21 @@ export async function deletePost(req, res) {
 
       res.status(200).json({msg: 'Post deleted successful.'});
     }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function updateUserProfile(req, res) {
+  const path = '/images/' + req.file.filename;
+  const { newName } = req.body;
+  
+  try {
+    if(req.session.user){
+      await User.findByIdAndUpdate(req.session.user._id, { avatarUrl: path, name: newName })
+      const user = await User.findById(req.session.user._id).select('-password');
+      res.json(user);
+    }  
   } catch (error) {
     console.log(error);
   }

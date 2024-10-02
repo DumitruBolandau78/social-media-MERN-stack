@@ -5,7 +5,7 @@ import { UserContext } from "../../context/UserContext";
 // eslint-disable-next-line react/prop-types
 const FollowUser = ({ avatarUrl, name, username, _id }) => {
   const [isFollowing, setIsFollowing] = useState(false);
-  const { user } = useContext(UserContext);
+  const { user, setFollowingLength } = useContext(UserContext);
 
   function isUserFollowed() {
     fetch(domain + `/api/isUserFollowed?userID=${_id}`, {
@@ -29,6 +29,12 @@ const FollowUser = ({ avatarUrl, name, username, _id }) => {
 
     setIsFollowing(prev => !prev);
 
+    if(isFollowing){
+      setFollowingLength(prev => prev - 1);
+    } else {
+      setFollowingLength(prev => prev + 1);
+    }
+
     document.querySelectorAll('.user-' + _id).forEach(btn => {
       btn.textContent = `${!isFollowing ? 'Unfollow' : 'Follow'}`;
     });
@@ -49,7 +55,7 @@ const FollowUser = ({ avatarUrl, name, username, _id }) => {
     <div className='flex justify-between bg-white rounded-md my-3 text-gray-900 items-center p-1'>
       <input type="hidden" name="userID" value={_id} />
       <div className="flex gap-1 cursor-pointer">
-        <div className="avatar flex items-center rounded-full border-[1px] border-gray-900 p-2"><img className="w-9 h-9 object-cover object-center" src={domain + avatarUrl} alt="user avatar" /></div>
+        <div className="avatar flex items-center rounded-full border-[1px] border-gray-200"><img className="rounded-full object-cover object-center w-[50px] h-[50px]" src={domain + avatarUrl} alt="user avatar" /></div>
         <div>
           <div className="name text-nowrap font-medium">{name}</div>
           <div className="username text-nowrap font-normal">@{username}</div>

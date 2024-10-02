@@ -17,7 +17,6 @@ const ProfilePost = ({ imgUrl, description, likes, createdAt, _id, currentUserPo
     }
     
     setPostID(_id);
-
     handlOpenModal(true);
 
     await fetch(domain + `/api/getPostComments?postID=${_id}`, {

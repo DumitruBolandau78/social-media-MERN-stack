@@ -6,7 +6,7 @@ import useDateFormat from '../../hooks/useDateFormat';
 // eslint-disable-next-line react/prop-types
 const Post = ({ _id, description, likes, imgUrl, createdAt, setComments, avatarUrl, name, username, userID, posts, setPosts, handlOpenModal }) => {
   const formattedDate = useDateFormat(createdAt);
-  const { user, setPostID } = useContext(UserContext);
+  const { user, setPostID, setFollowingLength } = useContext(UserContext);
   const [likesLenght, setLikesLength] = useState(likes.length);
   const [isLike, setIsLike] = useState(user && likes.includes(user._id));
   const [isSaved, setIsSaved] = useState(false);
@@ -38,6 +38,12 @@ const Post = ({ _id, description, likes, imgUrl, createdAt, setComments, avatarU
     }
 
     setIsFollowing(prev => !prev);
+
+    if(isFollowing){
+      setFollowingLength(prev => prev - 1);
+    } else {
+      setFollowingLength(prev => prev + 1);
+    }
 
     document.querySelectorAll('.user-' + userID).forEach(btn => {
       btn.textContent = `${isFollowing ? 'Follow' : 'Unfollow'}`;
@@ -132,7 +138,7 @@ const Post = ({ _id, description, likes, imgUrl, createdAt, setComments, avatarU
     <div className='shadow-lg bg-white text-gray-900 mb-10 p-10 rounded-md'>
       <div className='flex justify-between shadow-md'>
         <div className='flex gap-5 items-center p-2 rounded-lg'>
-          <div className='rounded-full p-3 shadow-md'>
+          <div className='rounded-full overflow-hidden shadow-md'>
             <img className='w-full max-w-[40px]' src={domain + avatarUrl} alt="user avatar" />
           </div>
           <div>
