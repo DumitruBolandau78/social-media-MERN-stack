@@ -6,10 +6,17 @@ export const UserContext = React.createContext();
 const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [postID, setPostID] = useState(null);
-    const [followingLength, setFollowingLength] = useState(null);
+    const [following, setFollowing] = useState([]);
+
+    function toggleFollow(uid) {
+        const newFollowerList = following.includes(uid)
+            ? following.filter((u) => u !== uid)
+            : [...following, uid];
+        setFollowing(newFollowerList ?? []);
+    }
 
     return (
-        <UserContext.Provider value={{ user, setUser, postID, setPostID, followingLength, setFollowingLength }}>
+        <UserContext.Provider value={{ user, setUser, postID, setPostID, following, setFollowing, toggleFollow }}>
             {children}
         </UserContext.Provider>
     )

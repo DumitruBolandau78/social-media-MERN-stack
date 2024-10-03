@@ -8,7 +8,7 @@ import ProfileSavedPostsList from '../components/Posts/ProfileSavedPostsList';
 import Modal from '../components/Modal';
 
 const Profile = () => {
-  const { user, setUser, followingLength, setFollowingLength } = useContext(UserContext);
+  const { user, setUser, following } = useContext(UserContext);
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('posts');
   const [isOpenModal, toggle] = useState(false);
@@ -34,7 +34,6 @@ const Profile = () => {
         if (data.user) {
           setEditName(data.user.name);
           setUser(data.user);
-          setFollowingLength(data.user.following.length);
         } else {
           alert('To access PROFILE please LOG IN.');
           navigate('/');
@@ -94,7 +93,7 @@ const Profile = () => {
         <div onClick={editProfileHandler} className='cursor-pointer bg-white font-medium rounded-full py-2 px-6 text-gray-900'>Edit profile</div>
         <div className='flex gap-14 text-2xl mt-3'>
           <div className='cursor-pointer'>Followers {user?.followers.length ? user.followers.length : 0}</div>
-          <div className='cursor-pointer'>Following {followingLength ? followingLength : 0}</div>
+          <div className='cursor-pointer'>Following {following.length?  new Set(following).size : 0}</div>
         </div>
       </div>
       <div className='grid grid-cols-2 border-t-2 border-white mt-6 pt-3'>

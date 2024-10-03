@@ -1,11 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { domain } from "../../utils/variables";
 import { UserContext } from "../../context/UserContext";
 
 // eslint-disable-next-line react/prop-types
 const FollowUser = ({ avatarUrl, name, username, _id }) => {
-  const [isFollowing, setIsFollowing] = useState(false);
-  const { user, setFollowingLength } = useContext(UserContext);
+  const { user, following, setFollowing, toggleFollow } = useContext(UserContext);
 
   function isUserFollowed() {
     fetch(domain + `/api/isUserFollowed?userID=${_id}`, {
@@ -14,7 +13,9 @@ const FollowUser = ({ avatarUrl, name, username, _id }) => {
     })
       .then(res => res.json())
       .then(data => {
-        setIsFollowing(data.msg);
+        if(data.msg){
+          setFollowing(prev => [...prev, _id]);
+        }
       }).catch((err) => console.log(err));
   }
 
@@ -27,17 +28,7 @@ const FollowUser = ({ avatarUrl, name, username, _id }) => {
       return console.log('login for this');
     }
 
-    setIsFollowing(prev => !prev);
-
-    if(isFollowing){
-      setFollowingLength(prev => prev - 1);
-    } else {
-      setFollowingLength(prev => prev + 1);
-    }
-
-    document.querySelectorAll('.user-' + _id).forEach(btn => {
-      btn.textContent = `${!isFollowing ? 'Unfollow' : 'Follow'}`;
-    });
+    toggleFollow(_id);
 
     await fetch(domain + '/api/followUser', {
       headers: {
@@ -61,7 +52,7 @@ const FollowUser = ({ avatarUrl, name, username, _id }) => {
           <div className="username text-nowrap font-normal">@{username}</div>
         </div>
       </div>
-      <div><button onClick={followUserHandler} className={'rounded-full bg-gray-900 text-white font-medium py-2 px-3 user-' + _id}>{isFollowing? 'Unfollow' : 'Follow'}</button></div>
+      <div><button onClick={followUserHandler} className={'rounded-full bg-gray-900 text-white font-medium py-2 px-3 user-' + _id}>{following.includes(_id) ? "Unfollow" : "Follow"}</button></div>
     </div>
   )
 }

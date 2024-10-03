@@ -6,11 +6,10 @@ import useDateFormat from '../../hooks/useDateFormat';
 // eslint-disable-next-line react/prop-types
 const Post = ({ _id, description, likes, imgUrl, createdAt, setComments, avatarUrl, name, username, userID, posts, setPosts, handlOpenModal }) => {
   const formattedDate = useDateFormat(createdAt);
-  const { user, setPostID, setFollowingLength } = useContext(UserContext);
+  const { user, setPostID, following, setFollowing, toggleFollow } = useContext(UserContext);
   const [likesLenght, setLikesLength] = useState(likes.length);
   const [isLike, setIsLike] = useState(user && likes.includes(user._id));
   const [isSaved, setIsSaved] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(false);
 
   useEffect(() => {
     user?.saved.forEach(post => {
@@ -28,7 +27,9 @@ const Post = ({ _id, description, likes, imgUrl, createdAt, setComments, avatarU
     })
       .then(res => res.json())
       .then(data => {
-        setIsFollowing(data.msg);
+        if(data.msg){
+          setFollowing(prev => [...prev, userID]);
+        }
       }).catch((err) => console.log(err));
   }
 
@@ -37,18 +38,8 @@ const Post = ({ _id, description, likes, imgUrl, createdAt, setComments, avatarU
       return console.log('login for this');
     }
 
-    setIsFollowing(prev => !prev);
-
-    if(isFollowing){
-      setFollowingLength(prev => prev - 1);
-    } else {
-      setFollowingLength(prev => prev + 1);
-    }
-
-    document.querySelectorAll('.user-' + userID).forEach(btn => {
-      btn.textContent = `${isFollowing ? 'Follow' : 'Unfollow'}`;
-    });
-
+    toggleFollow(userID);
+    
     await fetch(domain + '/api/followUser', {
       headers: {
         "Content-Type": "application/json"
@@ -146,7 +137,7 @@ const Post = ({ _id, description, likes, imgUrl, createdAt, setComments, avatarU
               <div className='font-medium text-md'>
                 {user?.username === username ? name + ' (You)' : <div className='cursor-pointer'>{name}</div>}
               </div>
-              {user?.username === username ? '' : <button onClick={followUserHandler} className={'bg-gray-900 text-white font-normal rounded-full py-1 px-6 user-' + userID}>{isFollowing ? 'Unfollow' : 'Follow'}</button>}
+              {user?.username === username ? '' : <button onClick={followUserHandler} className={'bg-gray-900 text-white font-normal rounded-full py-1 px-6 user-' + userID}>{following.includes(userID) ? "Unfollow" : "Follow"}</button>}
 
             </div>
           </div>
