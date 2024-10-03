@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { domain } from '../../utils/variables';
 import ProfilePost from './ProfilePost';
 import CommentBox from '../CommentBox';
 
@@ -11,7 +10,7 @@ const ProfilePostList = () => {
   const [isOpenModal, toggle] = useState(false);
 
   const fetchPosts = async () => {
-    const response = await fetch(domain + `/api/getCurrentUserPosts?page=${page}`, { credentials: 'include' });
+    const response = await fetch(process.env.DOMAIN + `/api/getCurrentUserPosts?page=${page}`, { credentials: 'include' });
     const data = await response.json();
     
     if(data){

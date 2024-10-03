@@ -7,14 +7,13 @@ import Account from './pages/Account';
 import WrongPage from './pages/404';
 import Layout from './pages/Layout';
 import { UserContext } from './context/UserContext';
-import { domain } from './utils/variables';
 import { useContext } from 'react';
 
 function App() {
   const { setUser } = useContext(UserContext);
 
   const fetchUser = async () => {
-    await fetch(domain + '/api/getCurrentUser', {
+    await fetch(process.env.DOMAIN + '/api/getCurrentUser', {
       method: 'GET',
       credentials: 'include'
     })

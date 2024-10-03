@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import FollowUser from "./FollowUser"
-import { domain } from "../../utils/variables";
+
 
 const FollowUserList = () => {
   const [users, setUsers] = useState([]);
   async function getUsersToFollow(){
-    await fetch(domain + '/api/getUsers', {
+    await fetch(process.env.DOMAIN + '/api/getUsers', {
       method: 'GET',
       credentials: 'include'
     })

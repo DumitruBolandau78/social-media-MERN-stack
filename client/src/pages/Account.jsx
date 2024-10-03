@@ -2,7 +2,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import JoinUserForm from '../components/JoinUserForm/JoinUserForm';
 import { Link } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
-import { domain } from '../utils/variables';
 import { UserContext } from '../context/UserContext';
 
 const Account = () => {
@@ -18,7 +17,7 @@ const Account = () => {
   const { setUser } = useContext(UserContext);
 
   const fetchUser = async () => {
-    await fetch(domain + '/api/getCurrentUser', {
+    await fetch(process.env.DOMAIN + '/api/getCurrentUser', {
       method: 'GET',
       credentials: 'include'
     })
@@ -47,7 +46,7 @@ const Account = () => {
     try {
       if (params === 'login') {
         json = JSON.stringify({ username: loginName, password: loginPass });
-        const response = await fetch(domain + '/api/login', {
+        const response = await fetch(process.env.DOMAIN + '/api/login', {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -76,7 +75,7 @@ const Account = () => {
           email: registerEmail
         });
 
-        const response = await fetch(domain + '/api/register', {
+        const response = await fetch(process.env.DOMAIN + '/api/register', {
           headers: {
             'Content-Type': 'application/json',
           },

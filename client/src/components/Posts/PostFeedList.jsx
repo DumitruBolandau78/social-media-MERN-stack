@@ -1,6 +1,5 @@
 import PostFeed from './PostFeed';
 import { useState, useEffect, useRef } from 'react';
-import { domain } from '../../utils/variables';
 import CommentBox from '../CommentBox';
 // eslint-disable-next-line react/prop-types
 const PostList = ({ posts, setPosts }) => {
@@ -15,7 +14,7 @@ const PostList = ({ posts, setPosts }) => {
 
   const fetchPosts = async () => {
     
-    const response = await fetch(domain + `/api/getPosts?page=${page}`);
+    const response = await fetch(process.env.DOMAIN + `/api/getPosts?page=${page}`);
     const data = await response.json();
     if (data.length < 5) {
       setHasMore(false);

@@ -1,5 +1,4 @@
 import { useContext, useEffect } from "react";
-import { domain } from "../../utils/variables";
 import { UserContext } from "../../context/UserContext";
 
 // eslint-disable-next-line react/prop-types
@@ -7,7 +6,7 @@ const FollowUser = ({ avatarUrl, name, username, _id }) => {
   const { user, following, setFollowing, toggleFollow } = useContext(UserContext);
 
   function isUserFollowed() {
-    fetch(domain + `/api/isUserFollowed?userID=${_id}`, {
+    fetch(process.env.DOMAIN + `/api/isUserFollowed?userID=${_id}`, {
       method: 'GET',
       credentials: 'include'
     })
@@ -30,7 +29,7 @@ const FollowUser = ({ avatarUrl, name, username, _id }) => {
 
     toggleFollow(_id);
 
-    await fetch(domain + '/api/followUser', {
+    await fetch(process.env.DOMAIN + '/api/followUser', {
       headers: {
         "Content-Type": "application/json"
       },
@@ -46,7 +45,7 @@ const FollowUser = ({ avatarUrl, name, username, _id }) => {
     <div className='flex justify-between bg-white rounded-md my-3 text-gray-900 items-center p-1'>
       <input type="hidden" name="userID" value={_id} />
       <div className="flex gap-1 cursor-pointer">
-        <div className="avatar flex items-center rounded-full border-[1px] border-gray-200"><img className="rounded-full object-cover object-center w-[50px] h-[50px]" src={domain + avatarUrl} alt="user avatar" /></div>
+        <div className="avatar flex items-center rounded-full border-[1px] border-gray-200"><img className="rounded-full object-cover object-center w-[50px] h-[50px]" src={process.env.DOMAIN + avatarUrl} alt="user avatar" /></div>
         <div>
           <div className="name text-nowrap font-medium">{name}</div>
           <div className="username text-nowrap font-normal">@{username}</div>

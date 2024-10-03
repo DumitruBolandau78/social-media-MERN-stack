@@ -1,7 +1,6 @@
 import Modal from './Modal'
 import { useRef, useContext, useEffect, useState } from 'react';
 import { UserContext } from '../context/UserContext';
-import { domain } from '../utils/variables';
 import Comment from './Comment';
 
 // eslint-disable-next-line react/prop-types
@@ -21,7 +20,7 @@ const CommentBox = ({ toggle, isOpenModal, comments, setComments }) => {
   }, [comments]);
 
   async function postCommentHandler() {
-    await fetch(domain + `/api/postComment`, {
+    await fetch(process.env.DOMAIN + `/api/postComment`, {
       headers: {
         'Content-type': 'application/json'
       },

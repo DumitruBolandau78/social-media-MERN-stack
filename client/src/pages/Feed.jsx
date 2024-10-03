@@ -2,7 +2,6 @@ import Container from '../components/Container';
 import StorieList from '../components/Stories/StorieList';
 import Modal from '../components/Modal';
 import { useState } from 'react';
-import { domain } from '../utils/variables';
 import PostFeedList from '../components/Posts/PostFeedList';
 
 const Feed = () => {
@@ -22,7 +21,7 @@ const Feed = () => {
     dataForm.append('file', file)
     dataForm.append('desc', desc)
 
-    await fetch(domain + '/api/post', {
+    await fetch(process.env.DOMAIN + '/api/post', {
       method: 'POST',
       credentials: 'include',
       body: dataForm
