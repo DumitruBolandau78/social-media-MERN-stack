@@ -24,7 +24,7 @@ const Account = () => {
     })
       .then(res => res.json())
       .then(data => {
-        if(data.user){
+        if (data.user) {
           setUser(data.user);
           navigate('/');
         }
@@ -35,7 +35,7 @@ const Account = () => {
   useEffect(() => {
     fetchUser();
 
-    if(params !== 'login' && params !== 'register' && params !== 'get-new-password'){
+    if (params !== 'login' && params !== 'register' && params !== 'get-new-password') {
       navigate('/wrong-page');
     }
   }, []);
@@ -44,44 +44,52 @@ const Account = () => {
     e.preventDefault();
     let json;
 
-    if(params == 'login') {
-      json = JSON.stringify({ username: loginName, password: loginPass });
-      await fetch(domain + '/api/login', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        method: 'POST',
-        body: json
-      })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
+    try {
+      if (params === 'login') {
+        json = JSON.stringify({ username: loginName, password: loginPass });
+        const response = await fetch(domain + '/api/login', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          method: 'POST',
+          body: json
+        });
+
+        console.log('ok');
+        const data = await response.json();
         
-        if(data.error){
-          setError(data.error)
-        } else if(data.user){
+
+        if (data.error) {
+          setError(data.error);
+        } else if (data.user) {
           setLoginName('');
           setLoginPass('');
           setUser(data.user);
           navigate('/');
         }
-      })
-    } else if(params == 'register'){
-      json = JSON.stringify({ username: registerUsername, name: registerName, password: registerPass, email: registerEmail });
-      await fetch(domain + '/api/register', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
-        credentials: 'include',
-        body: json
-      })
-      .then(res => res.json())
-      .then(data => {
-        if(data.error){
-          setError(data.error)
-        } else if(data.message){
+      } else if (params === 'register') {
+        json = JSON.stringify({
+          username: registerUsername,
+          name: registerName,
+          password: registerPass,
+          email: registerEmail
+        });
+
+        const response = await fetch(domain + '/api/register', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          credentials: 'include',
+          body: json
+        });
+
+        const data = await response.json();
+
+        if (data.error) {
+          setError(data.error);
+        } else if (data.message) {
           setError(null);
           setRegisterEmail('');
           setRegisterUsername('');
@@ -89,7 +97,10 @@ const Account = () => {
           setRegisterPass('');
           navigate('/account/login');
         }
-      })
+      }
+    } catch (error) {
+      console.error('Error during form submission:', error);
+      setError('An unexpected error occurred. Please try again later.');
     }
   }
 
@@ -130,8 +141,8 @@ const Account = () => {
           </JoinUserForm> :
 
           params == 'get-new-password' ?
-          '' :
-          navigate('/')}
+            '' :
+            navigate('/')}
     </div>
   )
 }

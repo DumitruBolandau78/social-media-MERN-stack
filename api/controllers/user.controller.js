@@ -34,6 +34,8 @@ export async function register(req, res) {
 export async function login(req, res) {
   const { username } = req.body;
 
+  console.log('ok');
+  
   try {
     const errors = validationResult(req);
 
@@ -44,8 +46,6 @@ export async function login(req, res) {
     const populatedUser = await User.findOne({ username }).select('-password').exec();
     req.session.user = populatedUser;
     req.session.save(err => {
-      console.log('success');
-      
       if (err) throw new err;
       res.json({ message: 'Login successfull', user: req.session.user });
     });

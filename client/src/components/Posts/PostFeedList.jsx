@@ -14,14 +14,16 @@ const PostList = ({ posts, setPosts }) => {
   }
 
   const fetchPosts = async () => {
-    const response = await fetch(domain + `/api/getPosts?page=${page}`, { credentials: 'include' });
+    
+    const response = await fetch(domain + `/api/getPosts?page=${page}`);
     const data = await response.json();
-
-    if (data.length === 0) {
+    if (data.length < 5) {
       setHasMore(false);
+      setPosts(prevPosts => [...prevPosts, ...data]);
     } else {
       setPosts(prevPosts => [...prevPosts, ...data]);
       setPage(prevPage => prevPage + 1);
+      
     }
   };
 

@@ -5,10 +5,9 @@ export async function getPosts(req, res) {
   const page = parseInt(req.query.page) || 1;
   const limit = 5;
   const skip = (page - 1) * limit;
-
+  
   try {
     const posts = await Post.find().populate('user', 'name username avatarUrl').sort({ createdAt: -1 }).skip(skip).limit(limit).exec();
-
     res.json(posts);
   } catch (err) {
     res.status(500).json({ message: err.message });
