@@ -15,7 +15,17 @@ const PORT = 1000 || process.env.PORT;
 const app = express();
 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', ['http://localhost:5173', 'https://social-media-mern-stack-client.vercel.app']);
+    const allowedOrigins = [
+        'http://localhost:5173',
+        'https://social-media-mern-stack-client.vercel.app'
+    ];
+
+    // Check if the request's origin is in the allowedOrigins array
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+    
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     next();
