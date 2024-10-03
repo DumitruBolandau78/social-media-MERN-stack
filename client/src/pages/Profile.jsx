@@ -75,7 +75,7 @@ const Profile = () => {
       .then(data => {
         handlOpenModal(false);
         setUser(data);
-        userImageUrl(null);
+        setUserImageUrl(null);
       })
       .catch(err => console.error(err));
   }
