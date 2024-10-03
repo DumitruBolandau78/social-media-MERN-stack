@@ -8,7 +8,7 @@ const ProfileSavedPostsList = () => {
   const [hasMore, setHasMore] = useState(true);
   const [comments, setComments] = useState([]);
   const [isOpenModal, toggle] = useState(false);
-
+  
   const fetchPosts = async () => {
     const response = await fetch(process.env.DOMAIN + `/api/getCurrentUserSavedPosts?page=${page}`, { credentials: 'include' });
     const data = await response.json();

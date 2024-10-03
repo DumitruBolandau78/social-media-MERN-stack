@@ -33,13 +33,7 @@ const allowedOrigins = [
     'http://localhost:5173'
 ];
 app.use(cors({
-    origin: (origin, callback) => {
-        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-            callback(null, origin);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: 'https://social-media-mern-stack-client.vercel.app http://localhost:5173',
     methods: ['get', 'post', 'put', 'delete'],
     allowedHeaders: ['Content-type'],
     credentials: true
