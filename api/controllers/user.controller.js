@@ -185,6 +185,8 @@ export async function isUserFollowed(req, res) {
       } else {
         res.status(200).json({ msg: false });
       }
+    } else {
+      res.json({ msg: 'user not logged' });
     }
   } catch (error) {
     console.log(error);
