@@ -28,8 +28,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
 app.use('/images', express.static('public'));
+const allowedOrigins = [
+    'https://social-media-mern-stack-client.vercel.app',
+    'http://localhost:5173'
+];
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://social-media-mern-stack-client.vercel.app'],
+    origin: (origin, callback) => {
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+            callback(null, origin);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     methods: ['get', 'post', 'put', 'delete'],
     allowedHeaders: ['Content-type'],
     credentials: true
