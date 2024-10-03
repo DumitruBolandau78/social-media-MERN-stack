@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import { useEffect } from 'react';
-import Feed from './pages/feed';
+import Feed from './pages/Feed';
 import Profile from './pages/Profile';
 import Account from './pages/Account';
 import WrongPage from './pages/404';
