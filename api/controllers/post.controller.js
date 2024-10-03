@@ -17,14 +17,15 @@ export async function getPosts(req, res) {
 export async function post(req, res) {
   const path = '/images/' + req.file.filename;
 
-  try {
-    const post = new Post({ description: req.body.desc, imgUrl: path, user: req.session.user._id });
-    await post.save();
-    await User.findOneAndUpdate({ username: req.session.user.username }, { $push: { posts: post._id } }
-    );
-
-    const posts = await Post.find().populate('user', 'name username avatarUrl').sort({ createdAt: -1 }).limit(5).exec();
-    res.json({ posts: posts });
+  try {    
+    if(req.session.user){
+      const post = new Post({ description: req.body.desc, imgUrl: path, user: req.session.user._id });
+      await post.save();
+      await User.findOneAndUpdate({ username: req.session.user.username }, { $push: { posts: post._id } });
+  
+      const posts = await Post.find().populate('user', 'name username avatarUrl').sort({ createdAt: -1 }).limit(5).exec();
+      res.json({ posts: posts });
+    }
   } catch (error) {
     console.log(error);
   }

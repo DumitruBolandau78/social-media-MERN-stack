@@ -55,9 +55,7 @@ const Account = () => {
           body: json
         });
 
-        console.log('ok');
         const data = await response.json();
-        
 
         if (data.error) {
           setError(data.error);

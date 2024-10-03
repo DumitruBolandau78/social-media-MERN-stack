@@ -42,8 +42,8 @@ const Header = () => {
       </form>
       <div>
         {user ?
-          <div onClick={() => handlOpenModal(true)} className="max-w-[40px] cursor-pointer text-white text-2xl border-b pb-1">
-            <img className="rounded-full bg-white w-full border-2" src={process.env.DOMAIN + user.avatarUrl} alt="user avatar" />
+          <div onClick={() => handlOpenModal(true)} className="w-[40px] h-[40px] cursor-pointer text-white text-2xl border-b pb-1">
+            <img className="w-[40px] h-[40px] rounded-full bg-white w-full border-2" src={process.env.DOMAIN + user.avatarUrl} alt="user avatar" />
           </div>
           :
           <Link to={'/account/login'} className="flex items-center gap-2 text-white">
