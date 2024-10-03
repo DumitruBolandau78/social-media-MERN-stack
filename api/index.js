@@ -29,7 +29,7 @@ app.use(express.json());
 app.use(express.static('public'));
 app.use('/images', express.static('public'));
 app.use(cors({
-    origin: 'https://social-media-mern-stack-client.vercel.app http://localhost:5173',
+    origin: 'https://social-media-mern-stack-client.vercel.app',
     methods: ['get', 'post', 'put', 'delete'],
     allowedHeaders: ['Content-type'],
     credentials: true
