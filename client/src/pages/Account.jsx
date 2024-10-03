@@ -56,9 +56,11 @@ const Account = () => {
       })
       .then(res => res.json())
       .then(data => {
+        console.log(data);
+        
         if(data.error){
           setError(data.error)
-        } else if(data.message){
+        } else if(data.user){
           setLoginName('');
           setLoginPass('');
           setUser(data.user);
