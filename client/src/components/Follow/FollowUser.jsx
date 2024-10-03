@@ -7,6 +7,9 @@ const FollowUser = ({ avatarUrl, name, username, _id }) => {
 
   function isUserFollowed() {
     fetch(process.env.DOMAIN + `/api/isUserFollowed?userID=${_id}`, {
+      headers: {
+        'Content-type': 'application/json'
+      },
       method: 'GET',
       credentials: 'include'
     })

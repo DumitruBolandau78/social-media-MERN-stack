@@ -21,6 +21,9 @@ const Post = ({ _id, description, likes, imgUrl, createdAt, setComments, avatarU
 
   function isUserFollowed() {
     fetch(process.env.DOMAIN + `/api/isUserFollowed?postID=${_id}`, {
+      headers: {
+        'Content-type': 'application/json'
+      },
       method: 'GET',
       credentials: 'include'
     })
