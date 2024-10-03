@@ -15,7 +15,7 @@ const PORT = 1000 || process.env.PORT;
 const app = express();
 
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173 https://social-media-mern-stack-client.vercel.app');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     next();
@@ -29,7 +29,7 @@ app.use(express.json());
 app.use(express.static('public'));
 app.use('/images', express.static('public'));
 app.use(cors({
-    origin: ['http://localhost:5173'],
+    origin: ['http://localhost:5173', 'https://social-media-mern-stack-client.vercel.app'],
     methods: ['get', 'post', 'put', 'delete'],
     allowedHeaders: ['Content-type'],
     credentials: true
