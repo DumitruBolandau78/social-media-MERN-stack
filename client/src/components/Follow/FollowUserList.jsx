@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import FollowUser from "./FollowUser"
 
-
 const FollowUserList = () => {
   const [users, setUsers] = useState([]);
   async function getUsersToFollow(){
