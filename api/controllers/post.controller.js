@@ -15,20 +15,35 @@ export async function getPosts(req, res) {
 }
 
 export async function post(req, res) {
-  const path = '/images/' + req.file.filename;
-  return res.json({path: path});
+  try {
+      if (!req.session.user) {
+          return res.status(401).json({ error: 'User not authenticated' });
+      }
 
-  try {    
-    if(req.session.user){
-      const post = new Post({ description: req.body.desc, imgUrl: path, user: req.session.user._id });
-      await post.save();
-      await User.findOneAndUpdate({ username: req.session.user.username }, { $push: { posts: post._id } });
-  
-      const posts = await Post.find().populate('user', 'name username avatarUrl').sort({ createdAt: -1 }).limit(5).exec();
-      res.json({ posts: posts });
-    }
+      const path = '/images/' + req.file.filename;
+
+      const newPost = new Post({
+          description: req.body.desc,
+          imgUrl: path,
+          user: req.session.user._id,
+      });
+
+      await newPost.save();
+      await User.findOneAndUpdate(
+          { username: req.session.user.username },
+          { $push: { posts: newPost._id } }
+      );
+
+      const posts = await Post.find()
+          .populate('user', 'name username avatarUrl')
+          .sort({ createdAt: -1 })
+          .limit(5)
+          .exec();
+
+      return res.json({ posts: posts });
   } catch (error) {
-    console.log(error);
+      console.error('Error in post function:', error);
+      return res.status(500).json({ error: 'An error occurred while processing your request.' });
   }
 }
 
