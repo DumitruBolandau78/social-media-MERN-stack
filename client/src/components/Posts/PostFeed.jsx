@@ -20,7 +20,7 @@ const Post = ({ _id, description, likes, imgUrl, createdAt, setComments, avatarU
   }, []);
 
   function isUserFollowed() {
-    fetch(process.env.DOMAIN + `/api/isUserFollowed?postID=${_id}`, {
+    fetch(`/api/isUserFollowed?postID=${_id}`, {
       headers: {
         'Content-type': 'application/json'
       },
@@ -42,7 +42,7 @@ const Post = ({ _id, description, likes, imgUrl, createdAt, setComments, avatarU
 
     toggleFollow(userID);
     
-    await fetch(process.env.DOMAIN + '/api/followUser', {
+    await fetch('/api/followUser', {
       headers: {
         "Content-Type": "application/json"
       },
@@ -56,7 +56,7 @@ const Post = ({ _id, description, likes, imgUrl, createdAt, setComments, avatarU
 
   async function likePostHandler() {
     setIsLike(!isLike);
-    await fetch(process.env.DOMAIN + '/api/likePostToggle', {
+    await fetch('/api/likePostToggle', {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -77,7 +77,7 @@ const Post = ({ _id, description, likes, imgUrl, createdAt, setComments, avatarU
 
   async function savePostHandler() {
     setIsSaved(!isSaved);
-    await fetch(process.env.DOMAIN + '/api/savePostToggle', {
+    await fetch('/api/savePostToggle', {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -89,7 +89,7 @@ const Post = ({ _id, description, likes, imgUrl, createdAt, setComments, avatarU
   }
 
   async function deletePostHandler() {
-    await fetch(process.env.DOMAIN + '/api/deletePost', {
+    await fetch('/api/deletePost', {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -115,7 +115,7 @@ const Post = ({ _id, description, likes, imgUrl, createdAt, setComments, avatarU
 
     handlOpenModal(true);
 
-    await fetch(process.env.DOMAIN + `/api/getPostComments?postID=${_id}`, {
+    await fetch(`/api/getPostComments?postID=${_id}`, {
       method: 'GET',
       credentials: 'include',
     }).then(res => res.json())
@@ -132,7 +132,7 @@ const Post = ({ _id, description, likes, imgUrl, createdAt, setComments, avatarU
       <div className='flex justify-between shadow-md'>
         <div className='flex gap-5 items-center p-2 rounded-lg'>
           <div className='rounded-full overflow-hidden shadow-md'>
-            <img className='w-full max-w-[40px]' src={process.env.DOMAIN + avatarUrl} alt="user avatar" />
+            <img className='w-full max-w-[40px]' src={avatarUrl} alt="user avatar" />
           </div>
           <div>
             <div className='flex gap-2 items-start flex-col'>
@@ -150,7 +150,7 @@ const Post = ({ _id, description, likes, imgUrl, createdAt, setComments, avatarU
       </div>
       <p className='mt-4'>{description}</p>
       <div className='flex justify-center my-10'>
-        <img className='object-center object-cover max-w-[500px] shadow-md max-h-[500px]' src={process.env.DOMAIN + imgUrl} alt="post image" />
+        <img className='object-center object-cover max-w-[500px] shadow-md max-h-[500px]' src={imgUrl} alt="post image" />
       </div>
       <div className='border-t-[1px] border-gray-200 flex items-center justify-around pt-6'>
         <div className='flex gap-3 w-[80px] justify-center'>

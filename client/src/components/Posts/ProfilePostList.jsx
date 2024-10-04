@@ -10,7 +10,7 @@ const ProfilePostList = () => {
   const [isOpenModal, toggle] = useState(false);
 
   const fetchPosts = async () => {
-    const response = await fetch(process.env.DOMAIN + `/api/getCurrentUserPosts?page=${page}`, { credentials: 'include' });
+    const response = await fetch(`/api/getCurrentUserPosts?page=${page}`, { credentials: 'include' });
     const data = await response.json();
     
     if(data){

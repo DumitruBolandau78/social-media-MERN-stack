@@ -10,7 +10,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   async function logoutHandler() {
-    await fetch(process.env.DOMAIN + '/api/logout', {
+    await fetch('/api/logout', {
       method: 'POST',
       credentials: 'include'
     })
@@ -41,7 +41,7 @@ const Header = () => {
       <div>
         {user ?
           <div onClick={() => handlOpenModal(true)} className="w-[40px] h-[40px] cursor-pointer text-white text-2xl border-b pb-1">
-            <img className="w-[40px] h-[40px] rounded-full bg-white w-full border-2" src={process.env.DOMAIN + user.avatarUrl} alt="user avatar" />
+            <img className="w-[40px] h-[40px] rounded-full bg-white w-full border-2" src={user.avatarUrl} alt="user avatar" />
           </div>
           :
           <Link to={'/account/login'} className="flex items-center gap-2 text-white">
@@ -53,7 +53,7 @@ const Header = () => {
       </div>
       <Modal isOpenModal={isOpenModal} handleClose={() => handlOpenModal(false)}>
         <div className="user-img text-center">
-          <img className="max-w-[300px] w-full object-cover object-center rounded-full" style={{border: '2px solid red'}} src={process.env.DOMAIN + user?.avatarUrl} alt="avatar user" />
+          <img className="max-w-[300px] w-full object-cover object-center rounded-full" style={{border: '2px solid red'}} src={user?.avatarUrl} alt="avatar user" />
           <div className="name mt-3 font-medium">{user?.name}</div>
           <div className="username">@{user?.username}</div>
         </div>
