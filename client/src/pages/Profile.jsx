@@ -106,7 +106,7 @@ const Profile = () => {
           <h2 className="font-medium text-center text-xl ">Edit profile {user?.username}</h2>
           <div className='flex flex-col items-center mt-6 gap-10'>
             <label className='rounded-full shadow-lg overflow-hidden cursor-pointer w-[150px] h-[150px]' title='Change image'>
-              <img className='object-center object-cover w-[150px] h-[150px]' src={userImageUrl ? userImageUrl : process.env.DOMAIN + '/' + user?.avatarUrl} alt="user avatar" />
+              <img className='object-center object-cover w-[150px] h-[150px]' src={userImageUrl ? userImageUrl : process.env.DOMAIN + user?.avatarUrl} alt="user avatar" />
               <input accept='image/*' onChange={replaceUserImage} type="file" className='hidden' />
             </label>
             <div className='flex justify-center items-center gap-6'>

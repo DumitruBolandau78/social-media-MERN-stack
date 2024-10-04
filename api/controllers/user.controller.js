@@ -8,7 +8,7 @@ export async function getCurrentUser(req, res) {
     const populatedUser = await User.findOne({ username: req.session.user.username }).select('-password').exec();
     res.json({ user: populatedUser });
   } else {
-    res.json({ error: 'Could not find user or is authenticated' });
+    res.json({ error: 'Could not find user' });
   }
 };
 
