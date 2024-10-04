@@ -58,8 +58,8 @@ const store = new MongoDBStoreSession({
 app.use(
     session({
         secret: 'your-secret-key',
-        resave: false,
-        saveUninitialized: false,
+        resave: true,
+        saveUninitialized: true,
         store,
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 30, // Session expiry time (optional)
