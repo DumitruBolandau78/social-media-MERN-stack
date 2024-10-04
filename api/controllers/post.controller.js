@@ -5,7 +5,7 @@ export async function getPosts(req, res) {
   const page = parseInt(req.query.page) || 1;
   const limit = 5;
   const skip = (page - 1) * limit;
-  
+
   try {
     const posts = await Post.find().populate('user', 'name username avatarUrl').sort({ createdAt: -1 }).skip(skip).limit(limit).exec();
     res.json(posts);
@@ -16,34 +16,34 @@ export async function getPosts(req, res) {
 
 export async function post(req, res) {
   try {
-      if (!req.session.user) {
-          return res.status(401).json({ error: 'User not authenticated' });
-      }
+    if (!req.session.user) {
+      return res.status(401).json({ error: 'User not authenticated' });
+    }
 
-      const path = '/images/' + req.file.filename;
+    const path = '/images/' + req.file.filename;
 
-      const newPost = new Post({
-          description: req.body.desc,
-          imgUrl: path,
-          user: req.session.user._id,
-      });
+    const newPost = new Post({
+      description: req.body.desc,
+      imgUrl: path,
+      user: req.session.user._id,
+    });
 
-      await newPost.save();
-      await User.findOneAndUpdate(
-          { username: req.session.user.username },
-          { $push: { posts: newPost._id } }
-      );
+    await newPost.save();
+    await User.findOneAndUpdate(
+      { username: req.session.user.username },
+      { $push: { posts: newPost._id } }
+    );
 
-      const posts = await Post.find()
-          .populate('user', 'name username avatarUrl')
-          .sort({ createdAt: -1 })
-          .limit(5)
-          .exec();
+    const posts = await Post.find()
+      .populate('user', 'name username avatarUrl')
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .exec();
 
-      return res.json({ posts: posts });
+    return res.json({ posts: posts });
   } catch (error) {
-      console.error('Error in post function:', error);
-      return res.status(500).json({ error: 'An error occurred while processing your request.' });
+    console.error('Error in post function:', error);
+    return res.status(500).json({ error: 'An error occurred while processing your request.' });
   }
 }
 
@@ -90,7 +90,7 @@ export async function savePostToggle(req, res) {
 export async function getPostComments(req, res) {
   const { postID } = req.query;
   try {
-    if(req.session.user){
+    if (req.session.user) {
       const populatedComment = await Post.findById(postID).select('comments').populate({
         path: 'comments',
         populate: {
@@ -110,8 +110,8 @@ export async function getPostComments(req, res) {
 export async function postComment(req, res) {
   const { comment, postID } = req.body;
   try {
-    if(req.session.user){   
-      await Post.findByIdAndUpdate(postID, { $push: {comments: { user: req.session.user._id, message: comment }} });
+    if (req.session.user) {
+      await Post.findByIdAndUpdate(postID, { $push: { comments: { user: req.session.user._id, message: comment } } });
 
       const populatedComment = await Post.findById(postID).select('comments').populate({
         path: 'comments',
