@@ -15,7 +15,7 @@ const FollowUser = ({ avatarUrl, name, username, _id }) => {
     })
       .then(res => res.json())
       .then(data => {
-        if(data.msg){
+        if(data.msg && user){
           setFollowing(prev => [...prev, _id]);
         }
       }).catch((err) => console.log(err));

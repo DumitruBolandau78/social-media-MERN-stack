@@ -29,7 +29,7 @@ const Post = ({ _id, description, likes, imgUrl, createdAt, setComments, avatarU
     })
       .then(res => res.json())
       .then(data => {
-        if(data.msg){
+        if(data.msg && user){
           setFollowing(prev => [...prev, userID]);
         }
       }).catch((err) => console.log(err));
