@@ -8,6 +8,8 @@ import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import userRoutes from './Routes/User.route.js';
 import postRoutes from './Routes/Post.route.js';
+import path from 'path';
+import {fileURLToPath} from 'url';
 
 env.config();
 const PORT = 1000 || process.env.PORT;
@@ -25,7 +27,7 @@ app.use((req, res, next) => {
     if (allowedOrigins.includes(origin)) {
         res.setHeader('Access-Control-Allow-Origin', origin);
     }
-    
+
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     next();
@@ -37,6 +39,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use(cors({
     origin: ['https://social-media-mern-stack-client.vercel.app', 'http://localhost:5173'],
     methods: ['get', 'post', 'put', 'delete'],
