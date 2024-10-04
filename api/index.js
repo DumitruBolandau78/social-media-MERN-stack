@@ -63,7 +63,6 @@ app.use(
         store,
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 30, // Session expiry time (optional)
-            httpOnly: false
         }
     })
 );
