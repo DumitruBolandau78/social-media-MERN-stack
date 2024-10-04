@@ -27,7 +27,7 @@ const FollowUser = ({ avatarUrl, name, username, _id }) => {
 
   async function followUserHandler() {
     if (!user) {
-      return console.log('login for this');
+      return alert('login for this');
     }
 
     toggleFollow(_id);

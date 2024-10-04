@@ -20,8 +20,6 @@ const Header = () => {
           setUser(null);
           toggle(false);
           navigate('/');
-        } else {
-          console.log(data);
         }
       })
       .catch(err => console.error(err));
