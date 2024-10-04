@@ -8,6 +8,7 @@ import WrongPage from './pages/404';
 import Layout from './pages/Layout';
 import { UserContext } from './context/UserContext';
 import { useContext } from 'react';
+import Notifications from './pages/Notifications';
 
 function App() {
   const { setUser } = useContext(UserContext);
@@ -36,6 +37,7 @@ function App() {
         <Route path='/' element={<Layout />}>
           <Route path='/' index element={<Feed />} />
           <Route path='/profile' element={<Profile />} />
+          <Route path='/notifications' element={<Notifications />} />
         </Route>
 
         <Route path='/account/:slug' element={<Account />} />

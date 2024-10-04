@@ -42,12 +42,7 @@ app.use(express.json());
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use('/images', express.static(path.join(__dirname, 'public', 'images')));
-app.use(cors({
-    origin: ['https://social-media-mern-stack-client.vercel.app', 'http://localhost:5173'],
-    methods: ['get', 'post', 'put', 'delete'],
-    allowedHeaders: ['Content-type'],
-    credentials: true
-}));
+app.use(cors());
 
 const MongoDBStoreSession = MongoDBStore(session);
 const store = new MongoDBStoreSession({
