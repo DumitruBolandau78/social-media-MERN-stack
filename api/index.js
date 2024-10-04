@@ -42,7 +42,7 @@ app.use(express.static('public'));
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/images', express.static(path.join(__dirname, 'public', 'images')));
 app.use(cors({
     origin: ['https://social-media-mern-stack-client.vercel.app', 'http://localhost:5173'],
     methods: ['get', 'post', 'put', 'delete'],
