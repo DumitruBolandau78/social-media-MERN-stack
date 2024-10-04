@@ -16,6 +16,7 @@ export async function getPosts(req, res) {
 
 export async function post(req, res) {
   const path = '/images/' + req.file.filename;
+  return res.json({path: path});
 
   try {    
     if(req.session.user){
