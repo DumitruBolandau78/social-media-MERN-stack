@@ -9,7 +9,7 @@ import bodyParser from 'body-parser';
 import userRoutes from './Routes/User.route.js';
 import postRoutes from './Routes/Post.route.js';
 import path from 'path';
-import {fileURLToPath} from 'url';
+import { fileURLToPath } from 'url';
 
 env.config();
 const PORT = 1000 || process.env.PORT;
@@ -63,7 +63,9 @@ app.use(
         store,
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 30, // Session expiry time (optional)
-            sameSite: false
+            httpOnly: true,
+            sameSite: true,
+            secure: true
         }
     })
 );
