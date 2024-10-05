@@ -24,17 +24,13 @@ const Feed = () => {
     dataForm.append('desc', desc)
 
     await fetch('/api/post', {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'multipart/form-data',
-      },
       method: 'POST',
       credentials: 'include',
       body: dataForm
     })
-      .then(res => console.log(res))
+      .then(res => res.json())
       .then(data => {
-        // console.log(data);
+        console.log(data);
 
         if (data.posts) setPosts(data.posts);
         setDesc('');
