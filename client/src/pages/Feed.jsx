@@ -28,9 +28,9 @@ const Feed = () => {
       credentials: 'include',
       body: dataForm
     })
-      .then(res => res.json())
+      .then(res => console.log(res))
       .then(data => {
-        console.log(data);
+        // console.log(data);
         
         if (data.posts) setPosts(data.posts);
         setDesc('');
