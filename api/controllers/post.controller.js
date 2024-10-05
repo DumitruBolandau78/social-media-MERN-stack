@@ -20,25 +20,15 @@ export async function post(req, res) {
       return res.status(401).json({ error: 'User not authenticated' });
     }
 
-    const path = '/images/' + req.file.filename;
+    return res.json({hi: 'hiii'});
 
-    const newPost = new Post({
-      description: req.body.desc,
-      imgUrl: path,
-      user: req.session.user._id,
-    });
+    const path = '/images/' + req.file.filename;
+    const newPost = new Post({ description: req.body.desc, imgUrl: path, user: req.session.user._id});
 
     await newPost.save();
-    await User.findOneAndUpdate(
-      { username: req.session.user.username },
-      { $push: { posts: newPost._id } }
-    );
+    await User.findOneAndUpdate({ username: req.session.user.username },{ $push: { posts: newPost._id } });
 
-    const posts = await Post.find()
-      .populate('user', 'name username avatarUrl')
-      .sort({ createdAt: -1 })
-      .limit(5)
-      .exec();
+    const posts = await Post.find().populate('user', 'name username avatarUrl').sort({ createdAt: -1 }).limit(5).exec();
 
     return res.json({ posts: posts });
   } catch (error) {
