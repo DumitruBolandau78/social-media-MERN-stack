@@ -11,5 +11,4 @@ router.post('/savePostToggle', savePostToggle);
 router.get('/getPostComments', getPostComments);
 router.post('/postComment', postComment)
 
-
 export default router;

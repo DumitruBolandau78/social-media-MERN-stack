@@ -20,8 +20,6 @@ export async function post(req, res) {
       return res.status(401).json({ error: 'User not authenticated' });
     }
 
-    return res.json({hi: 'hiii'});
-
     const path = '/images/' + req.file.filename;
     const newPost = new Post({ description: req.body.desc, imgUrl: path, user: req.session.user._id});
 
