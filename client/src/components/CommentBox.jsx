@@ -20,7 +20,7 @@ const CommentBox = ({ toggle, isOpenModal, comments, setComments }) => {
   }, [comments]);
 
   async function postCommentHandler() {
-    await fetch(process.env.DOMAIN + `/api/postComment`, {
+    await fetch(`/api/postComment`, {
       headers: {
         'Content-type': 'application/json'
       },

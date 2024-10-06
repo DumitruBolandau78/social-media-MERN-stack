@@ -6,7 +6,7 @@ const FollowUser = ({ avatarUrl, name, username, _id }) => {
   const { user, following, setFollowing, toggleFollow } = useContext(UserContext);
 
   function isUserFollowed() {
-    fetch(process.env.DOMAIN + `/api/isUserFollowed?userID=${_id}`, {
+    fetch(`/api/isUserFollowed?userID=${_id}`, {
       headers: {
         'Content-type': 'application/json'
       },
@@ -32,7 +32,7 @@ const FollowUser = ({ avatarUrl, name, username, _id }) => {
 
     toggleFollow(_id);
 
-    await fetch(process.env.DOMAIN + '/api/followUser', {
+    await fetch('/api/followUser', {
       headers: {
         "Content-Type": "application/json"
       },

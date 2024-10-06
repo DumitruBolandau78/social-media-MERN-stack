@@ -10,7 +10,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   async function logoutHandler() {
-    await fetch(process.env.DOMAIN + '/api/logout', {
+    await fetch('/api/logout', {
       method: 'POST',
       credentials: 'include'
     })

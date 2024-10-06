@@ -24,7 +24,7 @@ const Profile = () => {
   }, []);
 
   const fetchUser = () => {
-    fetch(process.env.DOMAIN + '/api/getCurrentUser', {
+    fetch('/api/getCurrentUser', {
       method: 'GET',
       credentials: 'include'
     })
@@ -65,7 +65,7 @@ const Profile = () => {
     dataForm.append('file', userImage)
     dataForm.append('newName', editName)
 
-    await fetch(process.env.DOMAIN + '/api/updateUserProfile', {
+    await fetch('/api/updateUserProfile', {
       method: 'POST',
       credentials: 'include',
       body: dataForm

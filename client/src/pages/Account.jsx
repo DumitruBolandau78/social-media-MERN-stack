@@ -17,7 +17,7 @@ const Account = () => {
   const { setUser } = useContext(UserContext);
 
   const fetchUser = async () => {
-    await fetch(process.env.DOMAIN + '/api/getCurrentUser', {
+    await fetch('/api/getCurrentUser', {
       method: 'GET',
       credentials: 'include'
     })
@@ -46,7 +46,7 @@ const Account = () => {
     try {
       if (params === 'login') {
         json = JSON.stringify({ username: loginName, password: loginPass });
-        const response = await fetch(process.env.DOMAIN + '/api/login', {
+        const response = await fetch('/api/login', {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -73,7 +73,7 @@ const Account = () => {
           email: registerEmail
         });
 
-        const response = await fetch(process.env.DOMAIN + '/api/register', {
+        const response = await fetch('/api/register', {
           headers: {
             'Content-Type': 'application/json',
           },

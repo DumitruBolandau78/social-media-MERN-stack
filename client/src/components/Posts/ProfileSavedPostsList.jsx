@@ -10,7 +10,7 @@ const ProfileSavedPostsList = () => {
   const [isOpenModal, toggle] = useState(false);
   
   const fetchPosts = async () => {
-    const response = await fetch(process.env.DOMAIN + `/api/getCurrentUserSavedPosts?page=${page}`, { credentials: 'include' });
+    const response = await fetch(`/api/getCurrentUserSavedPosts?page=${page}`, { credentials: 'include' });
     const data = await response.json();
     
     if(data){
