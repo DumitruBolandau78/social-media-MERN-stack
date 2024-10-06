@@ -19,7 +19,7 @@ const ProfilePost = ({ imgUrl, description, likes, createdAt, _id, currentUserPo
     setPostID(_id);
     handlOpenModal(true);
 
-    await fetch(`/api/getPostComments?postID=${_id}`, {
+    await fetch(process.env.DOMAIN + `/api/getPostComments?postID=${_id}`, {
       method: 'GET',
       credentials: 'include',
     }).then(res => res.json())
@@ -32,7 +32,7 @@ const ProfilePost = ({ imgUrl, description, likes, createdAt, _id, currentUserPo
   }
 
   async function deletePostHandler() {
-    await fetch('/api/deletePost', {
+    await fetch(process.env.DOMAIN + '/api/deletePost', {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -52,7 +52,7 @@ const ProfilePost = ({ imgUrl, description, likes, createdAt, _id, currentUserPo
 
   async function likePostHandler() {
     setIsLike(!isLike);
-    await fetch('/api/likePostToggle', {
+    await fetch(process.env.DOMAIN + '/api/likePostToggle', {
       headers: {
         'Content-Type': 'application/json',
       },

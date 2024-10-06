@@ -14,7 +14,7 @@ function App() {
   const { setUser } = useContext(UserContext);
   
   const fetchUser = async () => {
-    await fetch('/api/getCurrentUser', {
+    await fetch(process.env.DOMAIN + '/api/getCurrentUser', {
       method: 'GET',
       credentials: 'include'
     })

@@ -147,12 +147,13 @@ export async function followUser(req, res) {
       }
 
       if (idx >= 0) {
-        await User.findByIdAndUpdate(req.session.user._id, { $pull: { 'following': id } })
-        await User.findByIdAndUpdate(id, { $pull: { 'followers': req.session.user._id } })
+        await User.findByIdAndUpdate(req.session.user._id, { $pull: { 'following': id } });
+        await User.findByIdAndUpdate(id, { $pull: { 'followers': req.session.user._id } });
         res.status(200).json({ msg: false });
       } else {
-        await User.findByIdAndUpdate(req.session.user._id, { $push: { 'following': id } })
-        await User.findByIdAndUpdate(id, { $push: { 'followers': req.session.user._id } })
+        await User.findByIdAndUpdate(req.session.user._id, { $push: { 'following': id } });
+        await User.findByIdAndUpdate(id, { $push: { 'followers': req.session.user._id } });
+        
         res.status(200).json({ msg: true });
       }
     }

@@ -4,7 +4,7 @@ import FollowUser from "./FollowUser"
 const FollowUserList = () => {
   const [users, setUsers] = useState([]);
   async function getUsersToFollow(){
-    await fetch('/api/getUsers', {
+    await fetch(process.env.DOMAIN + '/api/getUsers', {
       method: 'GET',
       credentials: 'include'
     })

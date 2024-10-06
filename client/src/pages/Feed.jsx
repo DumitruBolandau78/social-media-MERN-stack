@@ -23,7 +23,7 @@ const Feed = () => {
     dataForm.append('file', file)
     dataForm.append('desc', desc)
 
-    await fetch('/api/post', {
+    await fetch(process.env.DOMAIN + '/api/post', {
       method: 'POST',
       credentials: 'include',
       body: dataForm
