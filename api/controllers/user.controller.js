@@ -33,7 +33,7 @@ export async function register(req, res) {
 
 export async function login(req, res) {
   const { username } = req.body;
-  
+
   try {
     const errors = validationResult(req);
 
@@ -66,7 +66,7 @@ export async function logout(req, res) {
 
 export async function getUsers(req, res) {
   try {
-    const users = await User.find({}).select('name username avatarUrl').sort({ createdAt: -1 }).limit(5);
+    const users = await User.find({}).select('name username avatarUrl').sort({ createdAt: -1 }).limit(6);
     if (req.session.user) {
       const filteredUsers = users.filter(user => user.username !== req.session.user.username);
       res.json({ users: filteredUsers });
@@ -148,12 +148,11 @@ export async function followUser(req, res) {
 
       if (idx >= 0) {
         await User.findByIdAndUpdate(req.session.user._id, { $pull: { 'following': id } });
-        await User.findByIdAndUpdate(id, { $pull: { 'followers': req.session.user._id } });
+        await User.findByIdAndUpdate(id, { $pull: { 'followers': req.session.user._id, 'notifications': { message: 'follow', user: req.session.user._id } } });
         res.status(200).json({ msg: false });
       } else {
         await User.findByIdAndUpdate(req.session.user._id, { $push: { 'following': id } });
-        await User.findByIdAndUpdate(id, { $push: { 'followers': req.session.user._id } });
-        
+        await User.findByIdAndUpdate(id, { $push: { 'followers': req.session.user._id, 'notifications': { message: 'follow', user: req.session.user._id } } });
         res.status(200).json({ msg: true });
       }
     }
@@ -195,7 +194,7 @@ export async function isUserFollowed(req, res) {
 export async function deletePost(req, res) {
   const { postID } = req.body;
   try {
-    if (req.session.user) {  
+    if (req.session.user) {
       const user = await User.findById(req.session.user._id).select('posts');
       const postIndex = user.posts.findIndex(post => post._id.toString() === postID);
       if (postIndex !== -1) {
@@ -204,7 +203,7 @@ export async function deletePost(req, res) {
       await user.save();
       await Post.findByIdAndDelete(postID);
 
-      res.status(200).json({msg: 'Post deleted successful.'});
+      res.status(200).json({ msg: 'Post deleted successful.' });
     }
   } catch (error) {
     console.log(error);
@@ -214,13 +213,37 @@ export async function deletePost(req, res) {
 export async function updateUserProfile(req, res) {
   const path = '/images/' + req.file.filename;
   const { newName } = req.body;
-  
+
   try {
-    if(req.session.user){
+    if (req.session.user) {
       await User.findByIdAndUpdate(req.session.user._id, { avatarUrl: path, name: newName })
       const user = await User.findById(req.session.user._id).select('-password');
       res.json(user);
-    }  
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getNotifications(req, res) {
+  try {
+    if (req.session.user) {
+      const user = await User.findById(req.session.user._id).select('notifications').populate({
+        path: 'notifications',
+        select: 'createdAt message',
+        populate: [
+          {
+            path: 'user',
+            select: 'name avatarUrl username'
+          },
+          {
+            path: 'post',
+            select: 'imgUrl createdAt description'
+          }]
+      }).exec();
+
+      res.json(user);
+    }
   } catch (error) {
     console.log(error);
   }

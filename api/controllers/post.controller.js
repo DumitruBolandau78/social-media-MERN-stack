@@ -43,10 +43,12 @@ export async function likePostToggle(req, res) {
       const idx = post.likes.findIndex(like => like._id.toString() === req.session.user._id.toString());
 
       if (idx >= 0) {
-        await Post.findByIdAndUpdate({ _id: postID }, { $pull: { likes: req.session.user._id } })
+        await Post.findByIdAndUpdate({ _id: postID }, { $pull: { likes: req.session.user._id } });
+        await User.findByIdAndUpdate(post.user, { $pull: { 'notifications': { message: 'like', user: req.session.user._id, post: post._id }}});
         res.json({ message: 'Unlike' });
       } else {
-        await Post.findByIdAndUpdate({ _id: postID }, { $push: { likes: req.session.user._id } })
+        await Post.findByIdAndUpdate({ _id: postID }, { $push: { likes: req.session.user._id } });
+        await User.findByIdAndUpdate(post.user, { $push: { 'notifications': { message: 'like', user: req.session.user._id,  post: post._id }}});
         res.json({ message: 'Like' });
       }
     }
@@ -110,7 +112,8 @@ export async function postComment(req, res) {
         select: 'message createdAt'
       }).exec();
 
-
+      const post = await Post.findById(postID).select('user');
+      await User.findByIdAndUpdate(post.user, { $push: { 'notifications': { message: 'comment', user: req.session.user._id, post: post._id }}});
 
       res.status(200).json(populatedComment);
     }

@@ -13,7 +13,7 @@ const PostList = ({ posts, setPosts }) => {
   }
 
   const fetchPosts = async () => {
-    const response = await fetch(`/api/getPosts?page=${page}`);
+    const response = await fetch(process.env.DOMAIN + `/api/getPosts?page=${page}`);
     const data = await response.json();
     if (data.length < 5) {
       setHasMore(false);

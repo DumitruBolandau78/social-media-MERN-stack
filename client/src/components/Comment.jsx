@@ -10,7 +10,7 @@ const Comment = ({ message, username, nameOfUser, avatarUrl, createdAt }) => {
   return (
     <div className='flex items-start gap-5 p-2 rounded-lg shadow-md my-2'>
       <div className='rounded-full'>
-        <img className='rounded-full max-w-[40px]' src={avatarUrl} alt="user avatar" />
+        <img className='rounded-full max-w-[40px]' src={process.env.DOMAIN + avatarUrl} alt="user avatar" />
       </div>
       <div className='w-full'>
         <div className='gap-2'>

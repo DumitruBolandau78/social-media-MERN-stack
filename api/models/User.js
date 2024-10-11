@@ -24,10 +24,14 @@ const userSchema = new Schema({
         type: String,
         required: true
       },
-      postId: {
+      post: {
         type: Schema.Types.ObjectId,
         ref: 'Post'
       },
+      createdAt: {
+        type: Date,
+        default: Date.now
+      }
     }
   ],
   password: {

@@ -19,7 +19,7 @@ const ProfilePost = ({ imgUrl, description, likes, createdAt, _id, currentUserPo
     setPostID(_id);
     handlOpenModal(true);
 
-    await fetch(`/api/getPostComments?postID=${_id}`, {
+    await fetch(process.env.DOMAIN + `/api/getPostComments?postID=${_id}`, {
       method: 'GET',
       credentials: 'include',
     }).then(res => res.json())
@@ -32,7 +32,7 @@ const ProfilePost = ({ imgUrl, description, likes, createdAt, _id, currentUserPo
   }
 
   async function deletePostHandler() {
-    await fetch('/api/deletePost', {
+    await fetch(process.env.DOMAIN + '/api/deletePost', {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -52,7 +52,7 @@ const ProfilePost = ({ imgUrl, description, likes, createdAt, _id, currentUserPo
 
   async function likePostHandler() {
     setIsLike(!isLike);
-    await fetch('/api/likePostToggle', {
+    await fetch(process.env.DOMAIN + '/api/likePostToggle', {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -74,11 +74,11 @@ const ProfilePost = ({ imgUrl, description, likes, createdAt, _id, currentUserPo
   return (
     <div className='shadow-lg bg-white text-gray-900 mb-10 p-10 rounded-md w-2/3'>
       <div className="font-medium">
-        {'Posted at ' + dateFormat}
+        {'Posted on ' + dateFormat}
       </div>
       <p className='mt-4'>{description}</p>
       <div className='flex justify-center my-10'>
-        <img className='object-center object-cover max-w-[500px] max-h-[500px] shadow-md' src={imgUrl} alt="post image" />
+        <img className='object-center object-cover max-w-[500px] max-h-[500px] shadow-md' src={process.env.DOMAIN + imgUrl} alt="post image" />
       </div>
       <div className='border-t-[1px] border-gray-200 flex items-center justify-around pt-6'>
         <div className='flex gap-3 w-[80px] justify-center'>
