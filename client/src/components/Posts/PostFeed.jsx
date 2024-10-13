@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context/UserContext';
 import useDateFormat from '../../hooks/useDateFormat';
+import { Link } from 'react-router-dom';
 
 // eslint-disable-next-line react/prop-types
 const Post = ({ _id, description, likes, imgUrl, createdAt, setComments, avatarUrl, name, username, userID, posts, setPosts, handlOpenModal }) => {
@@ -137,7 +138,7 @@ const Post = ({ _id, description, likes, imgUrl, createdAt, setComments, avatarU
           <div>
             <div className='flex gap-2 items-start flex-col'>
               <div className='font-medium text-md'>
-                {user?.username === username ? name + ' (You)' : <div className='cursor-pointer'>{name}</div>}
+                {user?.username === username ? name + ' (You)' : <Link to={'/profile/' + username} className='cursor-pointer'>{name}</Link>}
               </div>
               {user?.username === username ? '' : <button onClick={followUserHandler} className={'bg-gray-900 text-white font-normal rounded-full py-1 px-6 user-' + userID}>{following.includes(userID) ? "Unfollow" : "Follow"}</button>}
             </div>

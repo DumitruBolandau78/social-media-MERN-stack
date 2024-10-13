@@ -1,5 +1,6 @@
 import { useContext, useEffect } from "react";
 import { UserContext } from "../../context/UserContext";
+import { Link } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
 const FollowUser = ({ avatarUrl, name, username, _id }) => {
@@ -45,12 +46,11 @@ const FollowUser = ({ avatarUrl, name, username, _id }) => {
   }
 
   return (
-    <div className='flex justify-between bg-white rounded-md my-3 text-gray-900 items-center p-1'>
-      <input type="hidden" name="userID" value={_id} />
+    <div className='flex justify-between w-full bg-white rounded-md my-3 text-gray-900 items-center p-1'>
       <div className="flex gap-1 cursor-pointer">
         <div className="avatar flex items-center rounded-full border-[1px] border-gray-200"><img className="rounded-full object-cover object-center w-[50px] h-[50px]" src={process.env.DOMAIN + avatarUrl} alt="user avatar" /></div>
         <div>
-          <div className="name text-nowrap font-medium">{name}</div>
+          <Link to={'/profile/' + username} className="name text-nowrap font-medium">{name}</Link>
           <div className="username text-nowrap font-normal">@{username}</div>
         </div>
       </div>

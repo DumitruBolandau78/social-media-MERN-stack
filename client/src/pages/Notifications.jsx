@@ -47,8 +47,6 @@ const Notifications = () => {
     await fetch(process.env.DOMAIN + '/api/getNotifications', { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
-
         if (data.notifications) setNotifications(data.notifications);
       }).catch(err => console.log(err));
   }

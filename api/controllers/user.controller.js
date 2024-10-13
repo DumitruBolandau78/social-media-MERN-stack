@@ -5,7 +5,9 @@ import Post from '../models/Post.js';
 
 export async function getCurrentUser(req, res) {
   if (req.session.user) {
-    const populatedUser = await User.findOne({ username: req.session.user.username }).select('-password').exec();
+    const populatedUser = await User.findOne({ username: req.session.user.username })
+      .select('-password')
+      .populate('followers following', 'name username avatarUrl');
     res.json({ user: populatedUser });
   } else {
     res.json({ error: 'Could not find user' });
@@ -211,12 +213,15 @@ export async function deletePost(req, res) {
 }
 
 export async function updateUserProfile(req, res) {
-  const path = '/images/' + req.file.filename;
-  const { newName } = req.body;
-
   try {
+    const { newName } = req.body;
     if (req.session.user) {
-      await User.findByIdAndUpdate(req.session.user._id, { avatarUrl: path, name: newName })
+      if (req.file) {
+        const path = '/images/' + req.file.filename;
+        await User.findByIdAndUpdate(req.session.user._id, { avatarUrl: path, name: newName })
+      } else {
+        await User.findByIdAndUpdate(req.session.user._id, { name: newName })
+      }
       const user = await User.findById(req.session.user._id).select('-password');
       res.json(user);
     }
@@ -244,6 +249,21 @@ export async function getNotifications(req, res) {
 
       res.json(user);
     }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function fetchUserByUsername(req, res) {
+  const { username } = req.query;
+  try {
+    const user = await User.findOne({ username: username }).select('-password');
+
+    if (user) {
+      return res.status(200).json(user);
+    }
+
+    res.json({ error: 'Could not find user.' });
   } catch (error) {
     console.log(error);
   }
